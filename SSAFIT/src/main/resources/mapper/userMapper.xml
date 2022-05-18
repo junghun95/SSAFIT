@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace = "com.ssafy.ssafit.model.dao.UserDao">
 	
-	<resultMap type="userDTO" id="userMap">
+	<resultMap id="userMap" type="userDTO">
 		<result column="id" property="id"/>
 		<result column="username" property="username"/>
 		<result column="email" property="email"/>
