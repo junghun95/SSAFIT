@@ -24,13 +24,13 @@ public class FollowController {
 	
 	@PostMapping("")
 	public ResponseEntity<?> follow(@RequestBody FollowDTO followDTO){
-		followService.addFollow(followDTO.getFromUserId(), followDTO.getToUserEmail());
+		followService.addFollow(followDTO);
 		return new ResponseEntity<>(responseUtil.success("follow accept") ,HttpStatus.ACCEPTED);
 	}
 	
 	@PostMapping("/cancle")
 	public ResponseEntity<?> cancle(@RequestBody FollowDTO followDTO){
-		followService.removeFollow(followDTO.getFromUserId(), followDTO.getToUserEmail());
+		followService.removeFollow(followDTO);
 		return new ResponseEntity<>(responseUtil.success("follow cancle") ,HttpStatus.ACCEPTED);
 	}
 }
