@@ -33,7 +33,7 @@ public class UserController {
 		return new ResponseEntity<>(responseUtil.success("join success"), HttpStatus.ACCEPTED);
 	}
 	
-	@GetMapping("")
+	@GetMapping("/")
 	public ResponseEntity<?> list(){
 		return new ResponseEntity<>(responseUtil.success(userService.getAllUser()), HttpStatus.ACCEPTED);
 	} 
