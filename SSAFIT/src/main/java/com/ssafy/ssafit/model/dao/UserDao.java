@@ -10,4 +10,6 @@ public interface UserDao {
 	public List<UserDTO> selectAll();
 	public void delete(int id);
 	public void update(UserDTO user);
+	public List<UserDTO> selectFollowsByUsername(String username);
+	public List<UserDTO> selectFollowersByUsername(String username);
 }
