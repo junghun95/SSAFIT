@@ -10,4 +10,10 @@ public interface ReviewService {
 
 	List<ReviewDTO> getBoardReviewList(int id);
 
+	void writeReview(ReviewDTO review);
+
+	void removeReview(int id);
+
+	void modifyReview(ReviewDTO review);
+
 }
