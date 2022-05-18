@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class FollowDTO {
-	private String followId;
-	private String userId;
+	private String fromUsername;
+	private String toEmail;
 }
