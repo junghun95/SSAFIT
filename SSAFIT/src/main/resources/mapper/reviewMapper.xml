@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.ssafit.model.dao.ReviewDao">
-	<resultMap type="reviewMap" id="review">
+	<resultMap id="reviewMap" type="reviewDTO">
 		<result column="id" property="id"/>
 		<result column="content" property="content"/>
 		<result column="user_id" property="userId"/>
@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where board_id = #{id}
 	</select>
 	
-	<insert id="insert" parameterType="review">
+	<insert id="insert" parameterType="reviewDTO">
 		insert into review
 		values (0, #{content}, #{userId}, now(), #{videoId}, #{boardId})
 	</insert>
@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where id = #{id}
 	</delete>
 	
-	<update id="update" parameterType="review">
+	<update id="update" parameterType="reviewDTO">
 		update into review
 		set 
 		content = #{content}

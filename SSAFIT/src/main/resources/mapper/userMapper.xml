@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace = "com.ssafy.ssafit.model.dao.UserDao">
 	
-	<resultMap type="userMap" id="userDTO">
+	<resultMap id="userMap" type="userDTO">
 		<result column="id" property="id"/>
 		<result column="username" property="username"/>
 		<result column="email" property="email"/>
@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                         	where username = #{username}))
 	</select>
 	
-	<insert id="insert" parameterType="user" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+	<insert id="insert" parameterType="userDTO" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
 		insert
 			into user
 			values
@@ -55,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where id = #{id}
 	</delete>
 	
-	<update id="update" parameterType="user">
+	<update id="update" parameterType="userDTO">
 		update into user
 			set
 			password = #{password}
