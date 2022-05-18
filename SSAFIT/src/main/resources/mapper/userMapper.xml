@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace = "com.ssafy.ssafit.model.dao.userDao">
 	
-	<resultMap type="userMap" id="user">
+	<resultMap type="userMap" id="userDTO">
 		<result column="id" property="id"/>
 		<result column="username" property="username"/>
 		<result column="email" property="email"/>
@@ -21,6 +21,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectAll" resultMap="userMap">
 		select *
 			from user
+	</select>
+	
+	<select id="selectFollowsByUsername" parameterType="string" resultType="userDTO">
+		select u.id id, u.username username, u.email email, u.reg_date regDate
+			from user u inner join follow f
+				on u.email= f.user_id
+			where f.follow_id = #{username}
+	</select>
+	
+	<select id="selectFollowersByUsername" parameterMap="string" resultType="userDTO">
+		select id, username, email, reg_date regDate
+			from user
+        	where username 
+        	in (select follow_id 
+					from follow 
+                	where user_id
+                	= (select email 
+							from user 
+                        	where username = #{username}))
 	</select>
 	
 	<insert id="insert" parameterType="user" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
