@@ -13,35 +13,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<select id="selectById" parameterType="int" resultMap="userMap">
-		select *
+		select id, username, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
 			from user
 			where id = #{id}
 	</select>
 	<select id="selectByUsername" parameterType="string" resultMap="userMap">
-		select *
+		select id, username, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
 			from user
 			where username = #{username}
 	</select>
 	<select id="selectByEmail" parameterType="string" resultMap="userMap">
-		select *
+		select id, username, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
 			from user
 			where email = #{email}
 	</select>
 	
 	<select id="selectAll" resultMap="userMap">
-		select *
+		select id, username, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
 			from user
 	</select>
 	
 	<select id="selectFollowsByUsername" parameterType="string" resultType="userDTO">
-		select u.id id, u.username username, u.email email, u.reg_date regDate
+		select u.id id, u.username username, u.email email, select id, username, email, 
+			date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') reg_date
 			from user u inner join follow f
 				on u.email= f.user_id
 			where f.follow_id = #{username}
 	</select>
 	
-	<select id="selectFollowersByUsername" parameterMap="string" resultType="userDTO">
-		select id, username, email, reg_date regDate
+	<select id="selectFollowersByUsername" parameterType="string" resultType="userDTO">
+		select id, username, email, select id, username, email, 
+			date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
 			from user
         	where username 
         	in (select follow_id 
@@ -56,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert
 			into user
 			values
-			(0,#{username},#{password},#{email},#{now()})
+			(0,#{username},#{password},#{email},now())
 	</insert>
 	
 	<delete id="delete" parameterType="int">
