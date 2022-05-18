@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.ssafit.model.dao.FollowDao">
+	<insert id="insert" parameterType="followDTO">
+		insert 
+			into follow 
+		    values
+		    (#{followId}, 
+				(select email from user where username = #{userId}))
+	</insert>	
+	<delete id="delete" parameterType="followDTO">
+		delete 
+			from follow 
+		    where follow_id = #{followId}
+		    and user_id = (select email from user where username=#{userId})
+	</delete>
+</mapper>
