@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.ssafy.ssafit.model.dao.UserDao">
+	
+	<resultMap type="userMap" id="user">
+		<result column="id" property="id"/>
+		<result column="username" property="username"/>
+		<result column="email" property="email"/>
+		<result column="reg_date" property="regDate"/>
+	</resultMap>
+
+	<select id="selectById" parameterType="int" resultMap="userMap">
+		select *
+			from user
+			where id = #{id}
+	</select>
+	
+	<select id="selectAll" resultMap="userMap">
+		select *
+			from user
+	</select>
+	
+	<insert id="insert" parameterType="user" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert
+			into user
+			values
+			(0,#{username},#{password},#{email},#{now()})
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		delete 
+			from user
+			where id = #{id}
+	</delete>
+	
+	<update id="update" parameterType="user">
+		update into user
+			set
+			password = #{password}
+			where id = #{id}
+	</update>
+</mapper>
