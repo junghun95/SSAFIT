@@ -8,13 +8,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert 
 			into follow 
 		    values
-		    (#{followId}, 
-				(select email from user where username = #{userId}))
+		    (#{fromUsername}, 
+				(select email from user where username = #{toEmail}))
 	</insert>	
 	<delete id="delete" parameterType="followDTO">
 		delete 
 			from follow 
-		    where follow_id = #{followId}
-		    and user_id = (select email from user where username=#{userId})
+		    where from_username = #{fromUsername}
+		    and to_email = (select email from user where username=#{toEmail})
 	</delete>
+	
+	<select id="selectByFollowIdAndUserId" parameterType="followDTO">
+		select *
+			from follow
+			where from_username = #{fromUsername}
+			and to_email = #{toEmail}
+	</select>
 </mapper>
