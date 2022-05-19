@@ -15,17 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.ssafit.model.dto.ReviewDTO;
 import com.ssafy.ssafit.model.service.ReviewService;
+import com.ssafy.ssafit.model.service.UserService;
 import com.ssafy.ssafit.util.ResponseUtil;
+
+import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/review")
+@RequiredArgsConstructor
+@Api("리뷰 컨트롤러")
 public class ReviewController {
-
-	@Autowired
-	private ReviewService reviewService;
-	
-	@Autowired
-	private ResponseUtil responseUtil;
+	private final ReviewService reviewService;
+	private final ResponseUtil responseUtil;
 
 	@GetMapping("/video/{id}")
 	public ResponseEntity<Map<String, Object>> videoReviewList(@PathVariable String id) {
