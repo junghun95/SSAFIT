@@ -10,7 +10,7 @@ import com.ssafy.ssafit.model.dto.ReviewDTO;
 
 @Service
 public class ReviewServiceImpl implements ReviewService{
-	@Autowired
+
 	private ReviewDao reviewDao;
 	
 	@Override
