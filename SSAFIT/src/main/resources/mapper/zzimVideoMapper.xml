@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.ssafit.model.dao.ZzimVideoDao">
+	<resultMap type="zzimVideoDTO" id="zzimMap">
+		<result column="id" property="id"/>
+		<result column="video_id" property="videoId"/>
+		<result column="user_id" property="userId"/>
+		<result column="part_id" property="partId"/>
+	</resultMap>
+
+	<insert id="insert" parameterType="zzimVideoDTO">
+		insert into like_video
+		values(0, #{videoId}, #{userId}, #{partId})
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		delete from like_video
+		where id = #{id}
+	</delete>
+	
+	<select id="selectAll" parameterType="int">
+		select *
+		from like_video l
+		inner join video v
+		on l.video_id = v.id 
+		where l.user_id = #{userId}
+	</select>
+</mapper>
