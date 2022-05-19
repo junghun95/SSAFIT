@@ -4,11 +4,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.ssafit.model.dao.ZzimVideoDao">
-	<resultMap type="zzimVideoDTO" id="zzimMap">
-		<result column="id" property="id"/>
+	<resultMap type="VideoResponseDTO" id="zzimMap">
 		<result column="video_id" property="videoId"/>
-		<result column="user_id" property="userId"/>
-		<result column="part_id" property="partId"/>
+		<result column="title" property="title"/>
+		<result column="part" property="part"/>
 	</resultMap>
 
 	<insert id="insert" parameterType="zzimVideoDTO">
@@ -21,11 +20,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where id = #{id}
 	</delete>
 	
-	<select id="selectAll" parameterType="int">
-		select *
+	<select id="selectAll" parameterType="int" resultMap="zzimMap">
+		select l.video_id video_id, v.title title, p.name part
 		from like_video l
 		inner join video v
-		on l.video_id = v.id 
+		on l.video_id = v.id
+		inner join part p
+		on l.part_id = p.id 
 		where l.user_id = #{userId}
 	</select>
 </mapper>

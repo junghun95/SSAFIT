@@ -7,10 +7,13 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class VideoResponseDTO {
+@AllArgsConstructor
+public class VideoRequestDTO {
 	private String videoId;
 	private String title;
-	private String part;
+	private String channelName;
+	private String url;
+	private int userId;
+	private int partId;
 }
