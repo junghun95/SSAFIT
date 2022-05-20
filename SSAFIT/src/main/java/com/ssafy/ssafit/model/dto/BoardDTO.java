@@ -18,6 +18,7 @@ public class BoardDTO {
 	private String content;
 	private String regDate;
 	private int viewCnt;
+	private String isDeleteNY;
 	
 	private UserDTO user;
 	private List<PartDTO> parts;
