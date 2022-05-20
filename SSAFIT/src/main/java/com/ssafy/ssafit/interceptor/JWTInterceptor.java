@@ -11,14 +11,17 @@ import com.ssafy.ssafit.util.JWTUtil;
 
 @Component
 public class JWTInterceptor implements HandlerInterceptor{
-	private static final String HEADER_AUTH = "auth-token";
+	public static final String HEADER_AUTH = "Authorization";
 	
 	@Autowired
 	private JWTUtil jwtUtil;
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+			throws Exception { 
+		if (request.getMethod().equals("OPTIONS")) {
+		        return true;
+		    }
 		final String token = request.getHeader(HEADER_AUTH);
 		
 		if(token != null) {
