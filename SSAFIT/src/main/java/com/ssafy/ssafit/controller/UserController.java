@@ -1,5 +1,7 @@
 package com.ssafy.ssafit.controller;
 
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.ssafit.interceptor.JWTInterceptor;
 import com.ssafy.ssafit.model.dto.UserDTO;
+import com.ssafy.ssafit.model.dto.response.UserResponseDTO;
 import com.ssafy.ssafit.model.service.UserService;
 import com.ssafy.ssafit.util.JWTUtil;
 import com.ssafy.ssafit.util.ResponseUtil;
@@ -39,12 +42,18 @@ public class UserController {
 	
 	@GetMapping("/")
 	public ResponseEntity<?> list(){
-		return new ResponseEntity<>(responseUtil.success(userService.getAllUser()), HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(responseUtil.success(
+					userService.getAllUser().stream().map(u->UserResponseDTO.of(u)).collect(Collectors.toList())
+				), 
+				HttpStatus.ACCEPTED);
 	} 
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> one(@PathVariable int id){
-		return new ResponseEntity<>(responseUtil.success(userService.getOneById(id)), HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(responseUtil.success(
+					UserResponseDTO.of(userService.getOneById(id))
+				),
+				HttpStatus.ACCEPTED);
 	} 
 	
 	@GetMapping("/follower")

@@ -9,7 +9,6 @@ import com.ssafy.ssafit.exception.UserAlreadyExists;
 import com.ssafy.ssafit.exception.UserNotFound;
 import com.ssafy.ssafit.model.dao.UserDao;
 import com.ssafy.ssafit.model.dto.UserDTO;
-import com.ssafy.ssafit.model.dto.VideoDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -80,7 +79,7 @@ public class UserServiceImpl implements UserService{
 		user.setFollowers(getFollowers(user.getUsername()));
 		user.setFollows(getFollows(user.getUsername()));
 		user.setLikeVideos(zzimVideoService.getZzimList(user.getId()));
-		return userDAO.selectByUsername(username).orElse(null);
+		return user;
 	}
 
 	@Override
@@ -89,7 +88,7 @@ public class UserServiceImpl implements UserService{
 		user.setFollowers(getFollowers(user.getUsername()));
 		user.setFollows(getFollows(user.getUsername()));
 		user.setLikeVideos(zzimVideoService.getZzimList(user.getId()));
-		return userDAO.selectByEmail(email).orElse(null);		
+		return user;		
 	}
 
 	
