@@ -9,6 +9,7 @@ import com.ssafy.ssafit.exception.UserAlreadyExists;
 import com.ssafy.ssafit.exception.UserNotFound;
 import com.ssafy.ssafit.model.dao.UserDao;
 import com.ssafy.ssafit.model.dto.UserDTO;
+import com.ssafy.ssafit.model.dto.VideoDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService{
 	private final UserDao userDAO;
+	private final ZzimVideoService zzimVideoService;
 	
 	@Override
 	@Transactional
@@ -65,17 +67,30 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDTO getOneById(int id) {
-		return userDAO.selectById(id).orElse(null);
+		UserDTO user = userDAO.selectById(id).orElseThrow(()->new UserNotFound("존재하지 않는 유저입니다."));
+		user.setFollowers(getFollowers(user.getUsername()));
+		user.setFollows(getFollows(user.getUsername()));
+		user.setLikeVideos(zzimVideoService.getZzimList(user.getId()));
+		return user;
 	}
-
+	
 	@Override
 	public UserDTO getOneByUsername(String username) {
+		UserDTO user = userDAO.selectByUsername(username).orElseThrow(()->new UserNotFound("존재하지 않는 유저입니다."));
+		user.setFollowers(getFollowers(user.getUsername()));
+		user.setFollows(getFollows(user.getUsername()));
+		user.setLikeVideos(zzimVideoService.getZzimList(user.getId()));
 		return userDAO.selectByUsername(username).orElse(null);
 	}
 
 	@Override
 	public UserDTO getOneByEmail(String email) {
+		UserDTO user = userDAO.selectByEmail(email).orElseThrow(()->new UserNotFound("존재하지 않는 유저입니다."));
+		user.setFollowers(getFollowers(user.getUsername()));
+		user.setFollows(getFollows(user.getUsername()));
+		user.setLikeVideos(zzimVideoService.getZzimList(user.getId()));
 		return userDAO.selectByEmail(email).orElse(null);		
 	}
+
 	
 }

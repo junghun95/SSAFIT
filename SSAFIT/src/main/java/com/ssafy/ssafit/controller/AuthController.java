@@ -29,7 +29,7 @@ public class AuthController {
 	public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO){
 		try {
 			if (authService.check(loginRequestDTO.getUsername(), loginRequestDTO.getPassword())) {
-				return new ResponseEntity<>(responseUtil.success("auth-token", JWTResponseDTO.of(jwtUtil.createToken("id", loginRequestDTO.getUsername()))), HttpStatus.ACCEPTED);
+				return new ResponseEntity<>(responseUtil.success("token generation", JWTResponseDTO.of(jwtUtil.createToken("username", loginRequestDTO.getUsername()))), HttpStatus.ACCEPTED);
 			} else {			
 				return new ResponseEntity<>(responseUtil.success("fail"), HttpStatus.ACCEPTED);
 			}

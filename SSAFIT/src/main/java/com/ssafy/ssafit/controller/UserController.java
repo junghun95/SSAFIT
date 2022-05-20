@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.ssafit.interceptor.JWTInterceptor;
 import com.ssafy.ssafit.model.dto.UserDTO;
 import com.ssafy.ssafit.model.service.UserService;
+import com.ssafy.ssafit.util.JWTUtil;
 import com.ssafy.ssafit.util.ResponseUtil;
 
 import io.swagger.annotations.Api;
@@ -27,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	private final UserService userService;
 	private final ResponseUtil responseUtil;
+	private final JWTUtil jwtUtil;
+	
 	@PostMapping("/join")
 	public ResponseEntity<?> join(@RequestBody UserDTO userDTO){
 		userService.join(userDTO);
@@ -45,15 +49,11 @@ public class UserController {
 	
 	@GetMapping("/follower")
 	public ResponseEntity<?> follower(HttpServletRequest request){
-		String token = request.getHeader(""); // 추후 수정
-		String username = null; // 추후 수정
-		return new ResponseEntity<>(responseUtil.success(userService.getFollowers(username)), HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(responseUtil.success(userService.getFollowers(jwtUtil.getUsername(request.getHeader(JWTInterceptor.HEADER_AUTH)))), HttpStatus.ACCEPTED);
 	} 
 	@GetMapping("/follow")
 	public ResponseEntity<?> follow(HttpServletRequest request){
-		String token = request.getHeader(""); // 추후 수정
-		String username = null; // 추후 수정
-		return new ResponseEntity<>(responseUtil.success(userService.getFollows(username)), HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(responseUtil.success(userService.getFollows(jwtUtil.getUsername(request.getHeader(JWTInterceptor.HEADER_AUTH)))), HttpStatus.ACCEPTED);
 	} 
 	
 	
