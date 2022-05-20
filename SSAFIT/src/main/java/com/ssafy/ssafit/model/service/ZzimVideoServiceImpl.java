@@ -8,7 +8,7 @@ import com.ssafy.ssafit.model.dao.VideoDao;
 import com.ssafy.ssafit.model.dao.ZzimVideoDao;
 import com.ssafy.ssafit.model.dto.VideoDTO;
 import com.ssafy.ssafit.model.dto.ZzimVideoDTO;
-import com.ssafy.ssafit.model.dto.response.VideoRequestDTO;
+import com.ssafy.ssafit.model.dto.request.VideoRequestDTO;
 import com.ssafy.ssafit.model.dto.response.VideoResponseDTO;
 
 import lombok.RequiredArgsConstructor;

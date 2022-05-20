@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap id="userMap" type="userDTO">
 		<result column="id" property="id"/>
 		<result column="username" property="username"/>
+		<result column="password" property="password"/>
 		<result column="email" property="email"/>
 		<result column="reg_date" property="regDate"/>
 	</resultMap>
@@ -18,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where id = #{id}
 	</select>
 	<select id="selectByUsername" parameterType="string" resultMap="userMap">
-		select id, username, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
+		select id, username, password, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
 			from user
 			where username = #{username}
 	</select>
