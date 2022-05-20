@@ -1,9 +1,16 @@
 package com.ssafy.ssafit.util;
 
+import java.io.UnsupportedEncodingException;
+
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
+
 
 @Component
 public class JWTUtil {
@@ -21,5 +28,17 @@ public class JWTUtil {
 		Jwts.parser()
 			.setSigningKey(SALT.getBytes("UTF-8"))
 			.parseClaimsJws(token);
+	}
+	
+	public String getUsername(String token){
+		try {
+			return (String) Jwts.parser()
+					.setSigningKey(SALT.getBytes("UTF-8"))
+					.parseClaimsJws(token).getBody().get("username");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return "";
 	}
 }
