@@ -21,16 +21,16 @@ public class AuthServiceImpl implements AuthService{
 		if(userDTO == null) {
 			throw new UserNotFound("존재하지 않는 유저입니다.");
 		}
-//		if(userDTO.getPassword().equals(new SHA256().getHash(password))) {
-//			return true;
-//		}else {
-//			throw new PWIncorrectException();
-//		}
-		if(userDTO.getPassword().equals(password)) {
+		if(userDTO.getPassword().equals(new SHA256().getHash(password))) {
 			return true;
 		}else {
 			throw new PWIncorrectException();
 		}
+//		if(userDTO.getPassword().equals(password)) {
+//			return true;
+//		}else {
+//			throw new PWIncorrectException();
+//		}
 	}
 
 }

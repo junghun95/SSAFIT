@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.ssafy.ssafit.model.dao.ZzimVideoDao">
 	<resultMap type="videoDTO" id="zzimMap">
-		<result column="v.video_id" property="videoId"/>
+		<result column="v.id" property="videoId"/>
 		<result column="v.title" property="title"/>
 		<result column="v.channel_name" property="channelName"/>
 		<result column="v.url" property="url"/>
@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<select id="selectAll" parameterType="int" resultMap="zzimMap">
-		select v.video_id , v.title, v.channel_name, v.url ,p.name, p.id 
+		select v.id , v.title, v.channel_name, v.url ,p.name, p.id 
 		from like_video l
 		inner join video v
 		on l.video_id = v.id
