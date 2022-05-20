@@ -2,7 +2,7 @@ package com.ssafy.ssafit.model.service;
 
 import java.util.List;
 
-import com.ssafy.ssafit.model.dto.response.VideoRequestDTO;
+import com.ssafy.ssafit.model.dto.request.VideoRequestDTO;
 import com.ssafy.ssafit.model.dto.response.VideoResponseDTO;
 
 public interface ZzimVideoService {
