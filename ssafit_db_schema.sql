@@ -23,7 +23,7 @@ USE `ssafit` ;
 CREATE TABLE IF NOT EXISTS `ssafit`.`user` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(50) NOT NULL,
-  `password` VARCHAR(30) NOT NULL,
+  `password` VARCHAR(500) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
   `reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -47,7 +47,9 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`board` (
   INDEX `board_user_fk_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `board_user_fk`
     FOREIGN KEY (`user_id`)
-    REFERENCES `ssafit`.`user` (`id`))
+    REFERENCES `ssafit`.`user` (`id`)
+    on delete cascade
+    on update cascade)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
