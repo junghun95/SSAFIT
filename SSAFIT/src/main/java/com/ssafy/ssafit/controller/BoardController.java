@@ -1,7 +1,9 @@
 package com.ssafy.ssafit.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.ssafit.model.dto.BoardDTO;
+import com.ssafy.ssafit.model.dto.response.BoardResponseDTO;
 import com.ssafy.ssafit.model.service.BoardService;
 import com.ssafy.ssafit.util.ResponseUtil;
 
@@ -38,19 +41,23 @@ public class BoardController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> one(@PathVariable int id){
-		return new ResponseEntity<>(responseUtil.success(boardService.read(id)), HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(responseUtil.success(BoardResponseDTO.of(boardService.read(id))), HttpStatus.ACCEPTED);
 	}
 	
 	@GetMapping("/list")
 	public ResponseEntity<?> list(
 								@RequestParam(defaultValue = "0") String mode,
-								@RequestParam(required = false, defaultValue = "") String key,
-								@RequestParam(required = false, defaultValue = "") String parts){
+								@RequestParam(defaultValue = "") String key,
+								@RequestParam(defaultValue = "") String parts){
 		Map<String, String>params = new HashMap<>();
 		params.put("mode",mode);
 		params.put("key",key);
 		params.put("parts",parts);
-		return new ResponseEntity<>(responseUtil.success(boardService.getAll(params)), HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(
+				responseUtil.success(
+						boardService.getAll(params).stream().map(b->BoardResponseDTO.of(b)).collect(Collectors.toList())
+				)
+				, HttpStatus.ACCEPTED);
 	}
 	
 	@PostMapping("/modify")
