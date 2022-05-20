@@ -47,7 +47,7 @@ public class ZzimVideoServiceImpl implements ZzimVideoService{
 	}
 
 	@Override
-	public List<VideoResponseDTO> getZzimList(int userId) {
+	public List<VideoDTO> getZzimList(int userId) {
 		return zzimVideoDao.selectAll(userId);
 	}
 
