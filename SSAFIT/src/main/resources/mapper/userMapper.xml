@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<select id="selectById" parameterType="int" resultMap="userMap">
-		select id, username, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
+		select id, username, password, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
 			from user
 			where id = #{id}
 	</select>
@@ -24,32 +24,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where username = #{username}
 	</select>
 	<select id="selectByEmail" parameterType="string" resultMap="userMap">
-		select id, username, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
+		select id, username, password, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
 			from user
 			where email = #{email}
 	</select>
 	
 	<select id="selectAll" resultMap="userMap">
-		select id, username, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
+		select id, username, password, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
 			from user
 	</select>
 	
 	<select id="selectFollowsByUsername" parameterType="string" resultType="userDTO">
-		select u.id id, u.username username, u.email email, select id, username, email, 
-			date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') reg_date
+		select u.id id, u.username username
 			from user u inner join follow f
-				on u.email= f.user_id
-			where f.follow_id = #{username}
+				on u.email= f.to_email
+			where f.from_username = #{username}
 	</select>
 	
 	<select id="selectFollowersByUsername" parameterType="string" resultType="userDTO">
-		select id, username, email, select id, username, email, 
-			date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
+		select id, username
 			from user
         	where username 
-        	in (select follow_id 
+        	in (select from_username 
 					from follow 
-                	where user_id
+                	where to_email
                 	= (select email 
 							from user 
                         	where username = #{username}))

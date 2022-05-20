@@ -14,4 +14,6 @@ public class VideoDTO {
 	private String title;
 	private String channelName;
 	private String url;
+	
+	private PartDTO part;
 }
