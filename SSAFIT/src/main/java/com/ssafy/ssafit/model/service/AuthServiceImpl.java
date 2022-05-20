@@ -26,11 +26,6 @@ public class AuthServiceImpl implements AuthService{
 		}else {
 			throw new PWIncorrectException();
 		}
-//		if(userDTO.getPassword().equals(password)) {
-//			return true;
-//		}else {
-//			throw new PWIncorrectException();
-//		}
 	}
 
 }

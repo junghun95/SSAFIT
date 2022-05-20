@@ -19,6 +19,7 @@ local.properties
 
 # ignore properties file
 config.properties
+application-API-KEY.properties
 
 # External tool builders
 .externalToolBuilders/

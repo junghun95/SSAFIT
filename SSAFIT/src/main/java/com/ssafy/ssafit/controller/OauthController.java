@@ -34,5 +34,7 @@ public class OauthController {
 		log.info(">> 소셜 로그인 API 서버로부터 받은 code : {}", code);
 		return oauthService.requestAccessToken(socialLoginType, code);
 	}
+	
+	
 
 }
