@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
@@ -61,4 +60,18 @@ public class GoogleOauth implements SocialOauth{
         return "구글 로그인 요청 처리 실패";
 	}
 	
+//	@Override
+//	public String getEMailURL() {
+//		Map<String, Object> params = new HashMap<>();
+//		params.put("scope", "email");
+//		params.put("response_type", "code");
+//		params.put("client_id", GOOGLE_SNS_CLIENT_ID);
+//		params.put("redirect_uri", GOOGLE_SNS_CALLBACK_URL);
+//		
+//		String parameterString =  params.entrySet().stream()
+//				.map(x -> x.getKey() + "=" + x.getValue())
+//				.collect(Collectors.joining("&"));
+//		
+//		return GOOGLE_SNS_BASE_URL + "?" + parameterString;
+//	}
 }

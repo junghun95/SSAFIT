@@ -59,7 +59,8 @@ public class UserController {
 	@GetMapping("/follower")
 	public ResponseEntity<?> follower(HttpServletRequest request){
 		return new ResponseEntity<>(responseUtil.success(userService.getFollowers(jwtUtil.getUsername(request.getHeader(JWTInterceptor.HEADER_AUTH)))), HttpStatus.ACCEPTED);
-	} 
+	}
+	
 	@GetMapping("/follow")
 	public ResponseEntity<?> follow(HttpServletRequest request){
 		return new ResponseEntity<>(responseUtil.success(userService.getFollows(jwtUtil.getUsername(request.getHeader(JWTInterceptor.HEADER_AUTH)))), HttpStatus.ACCEPTED);
