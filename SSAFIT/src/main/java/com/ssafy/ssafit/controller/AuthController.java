@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.ssafit.model.dto.request.LoginRequestDTO;
+import com.ssafy.ssafit.model.dto.response.JWTResponseDTO;
 import com.ssafy.ssafit.model.service.AuthService;
 import com.ssafy.ssafit.util.JWTUtil;
 import com.ssafy.ssafit.util.ResponseUtil;
@@ -28,7 +29,7 @@ public class AuthController {
 	public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO){
 		try {
 			if (authService.check(loginRequestDTO.getUsername(), loginRequestDTO.getPassword())) {
-				return new ResponseEntity<>(responseUtil.success("auth-token", jwtUtil.createToken("id", loginRequestDTO.getUsername())), HttpStatus.ACCEPTED);
+				return new ResponseEntity<>(responseUtil.success("auth-token", JWTResponseDTO.of(jwtUtil.createToken("id", loginRequestDTO.getUsername()))), HttpStatus.ACCEPTED);
 			} else {			
 				return new ResponseEntity<>(responseUtil.success("fail"), HttpStatus.ACCEPTED);
 			}
