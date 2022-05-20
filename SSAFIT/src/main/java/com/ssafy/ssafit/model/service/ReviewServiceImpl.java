@@ -1,5 +1,6 @@
 package com.ssafy.ssafit.model.service;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,4 +38,5 @@ public class ReviewServiceImpl implements ReviewService{
 	public void modifyReview(ReviewDTO review) {
 		reviewDao.update(review);
 	}
+
 }

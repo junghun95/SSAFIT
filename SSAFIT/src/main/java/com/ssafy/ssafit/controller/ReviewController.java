@@ -1,5 +1,6 @@
 package com.ssafy.ssafit.controller;
 
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.ssafit.model.dto.ReviewDTO;
 import com.ssafy.ssafit.model.service.ReviewService;
+
 import com.ssafy.ssafit.model.service.UserService;
 import com.ssafy.ssafit.util.ResponseUtil;
 
@@ -61,5 +64,6 @@ public class ReviewController {
 	public ResponseEntity<Map<String, Object>> modify(ReviewDTO review){
 		reviewService.modifyReview(review);
 		return new ResponseEntity<Map<String,Object>>(responseUtil.success("modify review"), HttpStatus.ACCEPTED);
+
 	}
 }
