@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.ssafit.model.dao.BoardDao">
+	<resultMap type="boardDTO" id="boardMap">
+		<result column="b.id" property="id"/>
+		<result column="b.title" property="title"/>
+		<result column="b.reg_date" property="regDate"/>
+		<result column="b.content" property="content"/>
+		<result column="b.view_cnt" property="viewCnt"/>
+		
+		
+		<association property="user" javaType="userDTO">
+			<result column="u.id" property="id"/>
+			<result column="u.username" property="username"/>
+			<result column="u.email" property="email"/>
+			<result column="u.reg_date" property="regDate"/>
+		</association>
+		<collection property="parts" javaType="List" ofType="partDTO">
+			<result column="p.id" property="id"/>
+			<result column="p.name" property="name"/>
+		</collection>
+		<collection property="reviews" javaType="List" ofType="reviewDTO">
+			<result column="r.id" property="id"/>
+			<result column="r.content" property="content"/>
+			<result column="r.user_id" property="userId"/>
+			<result column="r.reg_date" property="regDate"/>
+			<result column="r.video_id" property="videoId"/>
+			<result column="r.board_id" property="boardId"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectAll" parameterType="HashMap" resultMap="boardMap">
+		select b.id "b.id", b.title "b.title", b.content "b.content", b.view_cnt "b.view_cnt",
+				 p.id "p.id", p.name "p.name", 
+				 u.id "u.id", u.username "u.username", u.email "u.email",
+				date_format(b.reg_date, '%Y-%m-%d %H:%i:%s') "b.reg_date",
+				date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date"
+			from (board b inner join partboard bp 
+				on b.id = bp.board_id)
+        		inner join user u
+				on u.id = b.user_id
+            	inner join part p
+				on p.id = bp.part_id
+			where 
+				b.id > 0
+			<choose>
+				<when test="mode == 1">
+					and u.username like concat('%',#{key},'%')
+				</when>
+				<when test="mode == 2">
+					and (b.title like concat('%',#{key},'%')
+					or b.content like concat('%',#{key},'%'))
+				</when>
+			</choose>
+			<if test="parts != ''">
+				and p.id in (#{parts})				
+			</if>
+			order by b.id desc
+			
+	</select>
+	
+	<select id="selectById" parameterType="int" resultMap="boardMap">
+		select b.id "b.id", b.title "b.title", b.content "b.content", b.view_cnt "b.view_cnt",
+				 p.id "p.id", p.name "p.name", 
+				 u.id "u.id", u.username "u.username", u.email "u.email",
+				 r.id "r.id", r.content "r.content", r.user_id "r.user_id", r.board_id "r.board_id", 
+				date_format(b.reg_date, '%Y-%m-%d %H:%i:%s') "b.reg_date",
+				date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date",
+				date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date"
+			from (board b inner join partboard bp 
+				on b.id = bp.board_id)
+        		inner join user u
+				on u.id = b.user_id
+            	inner join part p
+				on p.id = bp.part_id
+				inner join review r
+				on r.board_id = b.id
+			where b.id = #{id}
+	</select>
+	
+	<insert id="insert" parameterType="boardDTO">
+		insert
+			into board
+			values
+			(0,#{title}, #{content}, #{user.getUsername()}, #{0}, now())
+	</insert>
+	
+	<update id="update" parameterType="boardDTO">
+		update
+			board
+			set
+			content = #{content},
+			title = #{title},
+			view_cnt = #{viewCnt}
+			where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete
+			from board
+			where id = #{id}
+	</delete>
+	
+</mapper>
