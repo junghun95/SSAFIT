@@ -39,4 +39,9 @@ public class ReviewServiceImpl implements ReviewService{
 		reviewDao.update(review);
 	}
 
+	@Override
+	public ReviewDTO getReview(int id) {
+		return reviewDao.selectReview(id);
+	}
+
 }

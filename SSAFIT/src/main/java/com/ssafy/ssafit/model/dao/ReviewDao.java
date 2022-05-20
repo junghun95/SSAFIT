@@ -11,4 +11,5 @@ public interface ReviewDao {
 	void update(ReviewDTO review);
 	List<ReviewDTO> selectVideoReview(String id);
 	List<ReviewDTO> selectBoardReview(int id);
+	ReviewDTO selectReview(int id);
 }
