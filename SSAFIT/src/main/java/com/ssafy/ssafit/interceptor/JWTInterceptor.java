@@ -30,6 +30,4 @@ public class JWTInterceptor implements HandlerInterceptor{
 		}
 		throw new Exception("토큰이 유효하지 않습니다.");
 	}
-	
-	
 }
