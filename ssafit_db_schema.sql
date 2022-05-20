@@ -41,17 +41,36 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`board` (
   `title` VARCHAR(200) NOT NULL,
   `content` VARCHAR(2000) NOT NULL,
   `user_id` INT NOT NULL,
+  `view_cnt` INT NOT NULL default 0,
   `reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `board_user_fk_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `board_user_fk`
     FOREIGN KEY (`user_id`)
-    REFERENCES `ssafit`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `ssafit`.`user` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+-- -----------------------------------------------------
+-- Table `ssafit`.`partboard`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ssafit`.`partboard` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `board_id` INT NOT NULL,
+  `part_id` int not null,
+  PRIMARY KEY (`id`),
+  INDEX `partboard_board_fk_idx` (`board_id` ASC) VISIBLE,
+  INDEX `partboard_part_FK` (`part_id` ASC) VISIBLE,
+  CONSTRAINT `partboard_part_FK`
+    FOREIGN KEY (`part_id`)
+    REFERENCES `ssafit`.`part` (`id`),
+  CONSTRAINT `partboard_board_fk`
+    FOREIGN KEY (`board_id`)
+    REFERENCES `ssafit`.`board` (`id`)
+    on delete cascade
+    on update cascade)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `ssafit`.`follow`
@@ -141,15 +160,19 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`review` (
   INDEX `REVIEW_BOARD_FK_idx` (`board_id` ASC) VISIBLE,
   CONSTRAINT `REVIEW_USER_FK`
     FOREIGN KEY (`user_id`)
-    REFERENCES `ssafit`.`user` (`id`),
+    REFERENCES `ssafit`.`user` (`id`)
+    on delete cascade
+    on update cascade,
   CONSTRAINT `REVIEW_VIDEO_FK`
     FOREIGN KEY (`video_id`)
-    REFERENCES `ssafit`.`video` (`id`),
+    REFERENCES `ssafit`.`video` (`id`)
+    on delete cascade
+    on update cascade,
   CONSTRAINT `REVIEW_BOARD_FK`
     FOREIGN KEY (`board_id`)
     REFERENCES `ssafit`.`board` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    on delete cascade
+    on update cascade)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
