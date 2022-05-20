@@ -1,6 +1,5 @@
 package com.ssafy.ssafit.model.dto;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +17,9 @@ public class UserDTO {
 	private String username;
 	private String password;
 	private String email;
-	private LocalDate regDate;
+	private String regDate;
 	
-	private List<UserDTO> follows;
-	private List<UserDTO> followers;
-	private List<VideoDTO> likeVideos;
+	private List<UserDTO> follows = new ArrayList<>();
+	private List<UserDTO> followers = new ArrayList<>();
+	private List<VideoDTO> likeVideos = new ArrayList<>();
 }
