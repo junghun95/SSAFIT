@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`board` (
   `user_id` INT NOT NULL,
   `view_cnt` INT NOT NULL default 0,
   `reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `is_delete_NY` enum ('Y', 'N') default 'N',
+  `delete_date` TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `board_user_fk_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `board_user_fk`
@@ -128,9 +128,29 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`report` (
   `user_id` INT NOT NULL,
   `review_id` INT NOT NULL,
   `board_id` INT NOT NULL,
+  `content` varchar(2000) not null,
+  `reg_date` timestamp not null default current_timestamp, 
   INDEX `report_user_fk_idx` (`user_id` ASC) VISIBLE,
   PRIMARY KEY (`user_id`, `review_id`, `board_id`),
   CONSTRAINT `report_user_fk`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `ssafit`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- -----------------------------------------------------
+-- Table `ssafit`.`like`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ssafit`.`like` (
+  `user_id` INT NOT NULL,
+  `review_id` INT NOT NULL,
+  `board_id` INT NOT NULL,
+  `reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX `like_user_fk_idx` (`user_id` ASC) VISIBLE,
+  PRIMARY KEY (`user_id`, `review_id`, `board_id`),
+  CONSTRAINT `like_user_fk`
     FOREIGN KEY (`user_id`)
     REFERENCES `ssafit`.`user` (`id`)
     ON DELETE NO ACTION
@@ -173,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`review` (
   `reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `video_id` VARCHAR(30),
   `board_id` INT,
-  `is_delete_NY` enum ('Y', 'N') default 'N',
+  `delete_date` TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `REVIEW_VIDEO_idx` (`video_id` ASC) VISIBLE,
   INDEX `REVIEW_USER_idx` (`user_id` ASC) VISIBLE,
