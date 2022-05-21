@@ -16,4 +16,5 @@ public class ReviewDTO {
 	private String regDate;
 	private String videoId;
 	private int boardId;
+	private String isDeleteNY;
 }

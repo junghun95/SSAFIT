@@ -9,6 +9,8 @@ public interface ReviewService {
 	List<ReviewDTO> getVideoReviewList(String id);
 
 	List<ReviewDTO> getBoardReviewList(int id);
+	
+	ReviewDTO getReview(int id);
 
 
 	void writeReview(ReviewDTO review);
