@@ -159,6 +159,25 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
+-- Table `ssafit`.`notify`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ssafit`.`notify` (
+  `id` int not null auto_increment,
+  `user_id` INT NOT NULL,
+  `object_id` INT NOT NULL,
+  `d_type` enum('review', 'board', 'admin'),
+  `read_date` TIMESTAMP,
+  INDEX `notify_user_fk_idx` (`user_id` ASC) VISIBLE,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `notify_user_fk`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `ssafit`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- -----------------------------------------------------
 -- Table `ssafit`.`like_video`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ssafit`.`like_video` (
