@@ -30,18 +30,18 @@ public class WebConfig implements WebMvcConfigurer{
 	@Autowired
 	private JWTInterceptor jwtInterceptor;
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(jwtInterceptor)
-				.addPathPatterns("/**")
-				.excludePathPatterns(
-						"/api/auth/login", 
-						"/swagger-ui/**", 
-						"/swagger-resources/**", 
-						"/v3/api-docs/**",
-						"/api/auth/social/**",
-						"api/user/join",
-						"api/board/",
-						"api/board/list");
-	}
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(jwtInterceptor)
+//				.addPathPatterns("/**")
+//				.excludePathPatterns(
+//						"/api/auth/login", 
+//						"/swagger-ui/**", 
+//						"/swagger-resources/**", 
+//						"/v3/api-docs/**",
+//						"/api/auth/social/**",
+//						"api/user/join",
+//						"api/board/",
+//						"api/board/list");
+//	}
 }
