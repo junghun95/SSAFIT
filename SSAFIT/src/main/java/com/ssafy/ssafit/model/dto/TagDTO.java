@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PartDTO {
+public class TagDTO {
 	private int id;
 	private String name;
-
 }

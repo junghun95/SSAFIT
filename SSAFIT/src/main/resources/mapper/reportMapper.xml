@@ -5,9 +5,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 <mapper namespace="com.ssafy.ssafit.model.dao.ReportDao">
+
+	<resultMap type="reportDTO" id="reportMap">
+		<result column="user_id" property="userId"/>
+		<result column="review_id" property="reviewId"/>
+		<result column="board_id" property="boardId"/>
+		<result column="content" property="content"/>
+		<result column="reg_date" property="regDate"/>
+	</resultMap>
 	<insert id="insert" parameterType="reportDTO">
 		insert
 			into report
-			values(#{userId},#{reviewId},#{boardId})
+			values(#{userId},#{reviewId},#{boardId}, #{content}, now())
 	</insert>
+	
+	<select id="">
+		select *
+			from report
+	</select>
+	
+	<select id="selectByUserId" parameterType="int" resultMap="reportMap">
+		select * 
+			from report
+			where user_id = #{userId}
+	</select>
 </mapper>

@@ -3,36 +3,11 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.ssafit.model.dao.ZzimVideoDao">
-	<resultMap type="videoDTO" id="zzimMap">
-		<result column="v.id" property="videoId"/>
-		<result column="v.title" property="title"/>
-		<result column="v.channel_name" property="channelName"/>
-		<result column="v.url" property="url"/>
+<mapper namespace="com.ssafy.ssafit.model.dao.ZzimDao">
+	<resultMap type="zzimDTO" id="zzimMap">
 		
-		<association property="part" javaType="partDTO">
-			<result column="p.id" property="id"/>
-			<result column="p.name" property="name"/>
-		</association>
+		
 	</resultMap>
-
-	<insert id="insert" parameterType="zzimVideoDTO">
-		insert into like_video
-		values(0, #{videoId}, #{userId}, #{partId})
-	</insert>
+	 
 	
-	<delete id="delete" parameterType="int">
-		delete from like_video
-		where id = #{id}
-	</delete>
-	
-	<select id="selectAll" parameterType="int" resultMap="zzimMap">
-		select v.id , v.title, v.channel_name, v.url ,p.name, p.id 
-		from like_video l
-		inner join video v
-		on l.video_id = v.id
-		inner join part p
-		on l.part_id = p.id 
-		where l.user_id = #{userId}
-	</select>
 </mapper>

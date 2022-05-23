@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ReportDTO {
+public class ImageDTO {
+	private int id;
+	private String fileName;
+	private String fileLocation;
 	private int userId;
-	private int reviewId;
-	private int boardId;
-	private String content;
-	private String regDate;
+	private int boardImageId;
 }

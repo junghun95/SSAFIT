@@ -13,32 +13,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="reg_date" property="regDate"/>
 		<result column="video_id" property="videoId"/>
 		<result column="board_id" property="boardId"/>
-		<result column="is_deleteNY" property="isDeleteNY"/>
+		<result column="delete_date" property="deleteDate"/>
 	</resultMap>
 	
 	<select id="selectVideoReview" resultMap="reviewMap" parameterType="string">
 		select *
 		from review
 		where video_id = #{id}
-		and is_deleteNY = 'N'
+		and delete_date is null
 	</select>
 	<select id="selectReview" resultMap="reviewMap" parameterType="string">
 		select *
 		from review
 		where review_id = #{id}
-		and is_deleteNY = 'N'
+		and delete_date is null
 	</select>
 	<select id="selectBoardReview" resultMap="reviewMap" parameterType="int">
 		select *
 		from review
 		where board_id = #{id}
-		and is_deleteNY = 'N'
+		and delete_date is null
 	</select>
 	
 
 	<insert id="insert" parameterType="reviewDTO">
 		insert into review
-		values (0, #{content}, #{userId}, now(), #{videoId}, #{boardId}, 'N')
+		values (0, #{content}, #{userId}, now(), #{videoId}, #{boardId}, null)
 	</insert>
 	
 	<delete id="delete" parameterType="int">
@@ -49,8 +49,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="update" parameterType="reviewDTO">
 		update into review
 		set 
-		content = #{content}
-		is_deleteNY = #{isDeleteNY}
+		content = #{content},
+		delete_date= #{deleteDate}
 		where id = #{id}
 	</update>
 

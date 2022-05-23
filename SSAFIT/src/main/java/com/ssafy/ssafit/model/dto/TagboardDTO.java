@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ReportDTO {
-	private int userId;
-	private int reviewId;
+public class TagboardDTO {
+	private int id;
 	private int boardId;
-	private String content;
-	private String regDate;
+	private int tagId;
 }

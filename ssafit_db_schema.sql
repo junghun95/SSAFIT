@@ -1,5 +1,5 @@
 -- MySQL Workbench Forward Engineering
-DROP SCHEMA IF EXISTS `ssafit`;
+drop database if exists ssafit;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
@@ -25,10 +25,27 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`user` (
   `username` VARCHAR(50) NOT NULL,
   `password` VARCHAR(500) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
+  `role` enum('admin','user') not null,
   `reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `ssafit`.`category`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ssafit`.`category` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `par_id` INT NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  INDEX `category_self_fk_idx` (`par_id` ASC) VISIBLE,
+  CONSTRAINT `category_self_fk`
+    FOREIGN KEY (`par_id`)
+    REFERENCES `ssafit`.`category` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -41,39 +58,26 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`board` (
   `title` VARCHAR(200) NOT NULL,
   `content` VARCHAR(2000) NOT NULL,
   `user_id` INT NOT NULL,
-  `view_cnt` INT NOT NULL default 0,
+  `view_cnt` INT NOT NULL DEFAULT '0',
   `reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `delete_date` TIMESTAMP,
+  `delete_date` TIMESTAMP NULL DEFAULT NULL,
+  `category_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `board_user_fk_idx` (`user_id` ASC) VISIBLE,
+  INDEX `board_category_fk_idx` (`category_id` ASC) VISIBLE,
   CONSTRAINT `board_user_fk`
     FOREIGN KEY (`user_id`)
     REFERENCES `ssafit`.`user` (`id`)
-    on delete cascade
-    on update cascade)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `board_category_fk`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `ssafit`.`category` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
--- -----------------------------------------------------
--- Table `ssafit`.`partboard`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ssafit`.`partboard` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `board_id` INT NOT NULL,
-  `part_id` int not null,
-  PRIMARY KEY (`id`),
-  INDEX `partboard_board_fk_idx` (`board_id` ASC) VISIBLE,
-  INDEX `partboard_part_FK` (`part_id` ASC) VISIBLE,
-  CONSTRAINT `partboard_part_FK`
-    FOREIGN KEY (`part_id`)
-    REFERENCES `ssafit`.`part` (`id`),
-  CONSTRAINT `partboard_board_fk`
-    FOREIGN KEY (`board_id`)
-    REFERENCES `ssafit`.`board` (`id`)
-    on delete cascade
-    on update cascade)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `ssafit`.`follow`
@@ -99,46 +103,48 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `ssafit`.`part`
+-- Table `ssafit`.`image`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ssafit`.`part` (
+CREATE TABLE IF NOT EXISTS `ssafit`.`image` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `ssafit`.`video`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ssafit`.`video` (
-  `id` VARCHAR(30) NOT NULL,
-  `title` VARCHAR(200) NOT NULL,
-  `channel_name` VARCHAR(50) NOT NULL,
-  `url` VARCHAR(200) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- -----------------------------------------------------
--- Table `ssafit`.`report`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ssafit`.`report` (
+  `file_name` VARCHAR(300) NOT NULL,
+  `file_location` VARCHAR(300) NOT NULL,
   `user_id` INT NOT NULL,
-  `review_id` INT NOT NULL,
-  `board_id` INT NOT NULL,
-  `content` varchar(2000) not null,
-  `reg_date` timestamp not null default current_timestamp, 
-  INDEX `report_user_fk_idx` (`user_id` ASC) VISIBLE,
-  PRIMARY KEY (`user_id`, `review_id`, `board_id`),
-  CONSTRAINT `report_user_fk`
+  `board_image_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `image_user_fk_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `image_user_fk`
     FOREIGN KEY (`user_id`)
     REFERENCES `ssafit`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `ssafit`.`imageboard`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ssafit`.`imageboard` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `board_id` INT NOT NULL,
+  `image_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `imageboard_board_fk_idx` (`board_id` ASC) VISIBLE,
+  INDEX `imageboard_image_fk_idx` (`image_id` ASC) VISIBLE,
+  CONSTRAINT `imageboard_board_fk`
+    FOREIGN KEY (`board_id`)
+    REFERENCES `ssafit`.`board` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `imageboard_image_fk`
+    FOREIGN KEY (`image_id`)
+    REFERENCES `ssafit`.`image` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
 
 -- -----------------------------------------------------
 -- Table `ssafit`.`like`
@@ -148,56 +154,48 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`like` (
   `review_id` INT NOT NULL,
   `board_id` INT NOT NULL,
   `reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  INDEX `like_user_fk_idx` (`user_id` ASC) VISIBLE,
   PRIMARY KEY (`user_id`, `review_id`, `board_id`),
+  INDEX `like_user_fk_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `like_user_fk`
     FOREIGN KEY (`user_id`)
-    REFERENCES `ssafit`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `ssafit`.`user` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
 
 -- -----------------------------------------------------
 -- Table `ssafit`.`notify`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ssafit`.`notify` (
-  `id` int not null auto_increment,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `object_id` INT NOT NULL,
-  `d_type` enum('review', 'board', 'admin'),
-  `read_date` TIMESTAMP,
-  INDEX `notify_user_fk_idx` (`user_id` ASC) VISIBLE,
+  `d_type` ENUM('review', 'board', 'admin') NULL DEFAULT NULL,
+  `reg_date` timestamp not null default current_timestamp,
+  `read_date` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
+  INDEX `notify_user_fk_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `notify_user_fk`
     FOREIGN KEY (`user_id`)
-    REFERENCES `ssafit`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `ssafit`.`user` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+
 -- -----------------------------------------------------
--- Table `ssafit`.`like_video`
+-- Table `ssafit`.`report`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ssafit`.`like_video` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `video_id` VARCHAR(30) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ssafit`.`report` (
   `user_id` INT NOT NULL,
-  `part_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `like_video_video_id_FK_idx` (`video_id` ASC) VISIBLE,
-  INDEX `USER_VIDEO_FK_idx` (`user_id` ASC) VISIBLE,
-  INDEX `PART_LIKE_FK` (`part_id` ASC) VISIBLE,
-  CONSTRAINT `PART_LIKE_FK`
-    FOREIGN KEY (`part_id`)
-    REFERENCES `ssafit`.`part` (`id`),
-  CONSTRAINT `USER_LIKE_FK`
+  `review_id` INT NOT NULL,
+  `board_id` INT NOT NULL,
+  `content` VARCHAR(2000) NOT NULL,
+  `reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`, `review_id`, `board_id`),
+  INDEX `report_user_fk_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `report_user_fk`
     FOREIGN KEY (`user_id`)
-    REFERENCES `ssafit`.`user` (`id`),
-  CONSTRAINT `VIDEO_LIKE_FK`
-    FOREIGN KEY (`video_id`)
-    REFERENCES `ssafit`.`video` (`id`))
+    REFERENCES `ssafit`.`user` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -210,28 +208,72 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`review` (
   `content` VARCHAR(2000) NOT NULL,
   `user_id` INT NOT NULL,
   `reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `video_id` VARCHAR(30),
-  `board_id` INT,
-  `delete_date` TIMESTAMP,
+  `video_id` VARCHAR(30) NULL DEFAULT NULL,
+  `board_id` INT NULL DEFAULT NULL,
+  `delete_date` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  INDEX `REVIEW_VIDEO_idx` (`video_id` ASC) VISIBLE,
   INDEX `REVIEW_USER_idx` (`user_id` ASC) VISIBLE,
   INDEX `REVIEW_BOARD_FK_idx` (`board_id` ASC) VISIBLE,
-  CONSTRAINT `REVIEW_USER_FK`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `ssafit`.`user` (`id`)
-    on delete cascade
-    on update cascade,
-  CONSTRAINT `REVIEW_VIDEO_FK`
-    FOREIGN KEY (`video_id`)
-    REFERENCES `ssafit`.`video` (`id`)
-    on delete cascade
-    on update cascade,
   CONSTRAINT `REVIEW_BOARD_FK`
     FOREIGN KEY (`board_id`)
     REFERENCES `ssafit`.`board` (`id`)
-    on delete cascade
-    on update cascade)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `REVIEW_USER_FK`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `ssafit`.`user` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `ssafit`.`tag`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ssafit`.`tag` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `ssafit`.`tagboard`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ssafit`.`tagboard` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `board_id` INT NOT NULL,
+  `tag_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `tagtboard_board_fk_idx` (`board_id` ASC) VISIBLE,
+  INDEX `tagboard_tag_FK` (`tag_id` ASC) VISIBLE,
+  CONSTRAINT `tagboard_board_fk`
+    FOREIGN KEY (`board_id`)
+    REFERENCES `ssafit`.`board` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `tagboard_tag_FK`
+    FOREIGN KEY (`tag_id`)
+    REFERENCES `ssafit`.`tag` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `ssafit`.`zzim`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ssafit`.`zzim` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `video_id` VARCHAR(30) NOT NULL,
+  `user_id` INT NOT NULL,
+  `part_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `zzim_user_FK_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `zzim_user_FK`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `ssafit`.`user` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 

@@ -17,7 +17,7 @@ public class RedisUtil {
 	        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(o.getClass()));
 	        template.opsForValue().set(key, o, milliseconds, TimeUnit.MILLISECONDS);
 	    }
-
+	    
 	    public Object get(String key){
 	        return template.opsForValue().get(key);
 	    }

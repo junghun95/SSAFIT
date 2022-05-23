@@ -1,10 +1,14 @@
 package com.ssafy.ssafit.model.dto.response;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+import com.ssafy.ssafit.model.dto.ImageDTO;
+import com.ssafy.ssafit.model.dto.LikeDTO;
+import com.ssafy.ssafit.model.dto.NotifyDTO;
+import com.ssafy.ssafit.model.dto.ReportDTO;
+import com.ssafy.ssafit.model.dto.ReviewDTO;
 import com.ssafy.ssafit.model.dto.UserDTO;
-import com.ssafy.ssafit.model.dto.VideoDTO;
+import com.ssafy.ssafit.model.dto.ZzimDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,10 +25,17 @@ public class UserResponseDTO {
 	private String email;
 	private String regDate;
 	private String role;
+	private int followCnt;
+	private int followerCnt;
 
+	private List<ZzimDTO> zzims;
 	private List<UserDTO> follows;
 	private List<UserDTO> followers;
-	private List<VideoResponseDTO> likeVideos;
+	private List<ReviewDTO> reviews;
+	private List<ReportDTO> reports;
+	private List<NotifyDTO> notifies;
+	private List<LikeDTO> likes;
+	private List<ImageDTO> images;
 	
 	public static UserResponseDTO of(UserDTO userDTO) {
 		return UserResponseDTO.builder()
@@ -32,10 +43,16 @@ public class UserResponseDTO {
 				.username(userDTO.getUsername())
 				.email(userDTO.getEmail())
 				.regDate(userDTO.getRegDate())
-				.role("USER")
+				.role(userDTO.getRole())
+				.followCnt(userDTO.getFollowCnt())
+				.followerCnt(userDTO.getFollowerCnt())
 				.follows(userDTO.getFollows())
 				.followers(userDTO.getFollowers())
-				.likeVideos(userDTO.getLikeVideos().stream().map(v->VideoResponseDTO.of(v)).collect(Collectors.toList()))
+				.reviews(userDTO.getReviews())
+				.reports(userDTO.getReports())
+				.notifies(userDTO.getNotifies())
+				.likes(userDTO.getLikes())
+				.images(userDTO.getImages())
 				.build();
 	}
 

@@ -29,12 +29,12 @@ public class ReportService {
 	public void report(ReportDTO reportDTO) {
 		reportDao.insert(reportDTO);
 		
-		String type = reportDTO.getReviewId() == 0 ? "b" : "r";
+		String type = reportDTO.getReviewId() == 0 ? "board" : "review";
 		int id =  reportDTO.getReviewId() == 0 ? reportDTO.getBoardId() : reportDTO.getReviewId();
 		
 		String key = type.equals("r") ? type+String.valueOf(id) :
 													type+String.valueOf(id);
-		Integer cnt = redisUtil.get(key) == null? 0 : (Integer)redisUtil.get(key) + 1;
+		Integer cnt = redisUtil.get(key) == null? 1 : (Integer)redisUtil.get(key) + 1;
 		log.info("type: {}, id: {}, key: {}, cnt: {}",type,key, id, cnt);
 		
 		if(cnt == MAX) {
