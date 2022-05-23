@@ -62,11 +62,11 @@ public class GoogleOauth implements SocialOauth{
         	// 토큰 받아온걸 sha256적용해서 payload에 있는 email을 읽어오자..
         	try {
 				String email = this.getEmail(responseEntity);
+				return email;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-            return responseEntity.getBody();
         }
         return "구글 로그인 요청 처리 실패";
 	}
@@ -79,7 +79,11 @@ public class GoogleOauth implements SocialOauth{
 		String payload = idToken.split("\\.")[1];
 //		System.out.println(idToken);
 		Base64.Decoder decoder = Base64.getDecoder();
-		System.out.println(new String(decoder.decode(payload), StandardCharsets.UTF_8));
-		return idToken;
+//		System.out.println(new String(decoder.decode(payload), StandardCharsets.UTF_8));
+		String strPayload = new String(decoder.decode(payload), StandardCharsets.UTF_8);
+		jsonObject = (JSONObject) jsonParse.parse(strPayload);
+		String email = (String) jsonObject.get("email");
+		System.out.println(email);
+		return email;
 	}
 }
