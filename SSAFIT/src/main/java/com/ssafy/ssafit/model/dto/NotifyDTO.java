@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ReportDTO {
+public class NotifyDTO {
+	private int id;
 	private int userId;
-	private int reviewId;
-	private int boardId;
-	private String content;
-	private String regDate;
+	private int objectId;
+	private DType dType;
+	private String readDate;
 }

@@ -18,9 +18,13 @@ public class BoardDTO {
 	private String content;
 	private String regDate;
 	private int viewCnt;
-	private String isDeleteNY;
+	private int reviewCnt;
+	private int likeCnt;
+	private String deleteDate;
 	
 	private UserDTO user;
-	private List<PartDTO> parts;
+	private CategoryDTO category;
+	private List<TagDTO> tags;
 	private List<ReviewDTO> reviews;
+	private List<ImageDTO> images;
 }

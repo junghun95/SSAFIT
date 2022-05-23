@@ -6,32 +6,174 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace = "com.ssafy.ssafit.model.dao.UserDao">
 	
 	<resultMap id="userMap" type="userDTO">
-		<result column="id" property="id"/>
-		<result column="username" property="username"/>
-		<result column="password" property="password"/>
-		<result column="email" property="email"/>
-		<result column="reg_date" property="regDate"/>
+		<result column="u.id" property="id"/>
+		<result column="u.username" property="username"/>
+		<result column="u.email" property="email"/>
+		<result column="u.reg_date" property="regDate"/>
+		<result column="u.role" property="role"/>
+		<result column="u.follow_cnt" property="followCnt"/>
+		<result column="u.follower_cnt" property="followerCnt"/>
+		
+		<collection property="images" javaType="List" ofType="imageDTO">
+			<result column="i.id" property="id"/>
+			<result column="i.file_name" property="fileName"/>
+			<result column="i.file_location" property="fileLocation"/>
+		</collection>
+		
+		<collection property="notifies" javaType="List" ofType="notifyDTO">
+			<result column="n.id" property="id"/>
+			<result column="n.user_id" property="userId"/>
+			<result column="n.object_id" property="objectId"/>
+			<result column="n.d_type" property="dType"/>
+		</collection>
+		
+		<collection property="zzims" javaType="List" ofType="zzimDTO">
+			<result column="id" property="id"/>
+			<result column="video_id" property="videoId"/>
+			<result column="part_id" property="pardId"/>
+		</collection>
+		
+		<collection property="reviews" javaType="List" ofType="reviewDTO">
+			<result column="r.id" property="id"/>
+			<result column="r.content" property="content"/>
+			<result column="r.video_id" property="videoId"/>
+			<result column="r.board_id" property="boardId"/>
+			<result column="r.reg_date" property="regDate"/>
+		</collection>
+		
+		<collection property="reports" javaType="List" ofType="reportDTO">
+			<result column="re.review_id" property="reviewId"/>
+			<result column="re.board_id" property="boardId"/>
+			<result column="re.content" property="content"/>
+			<result column="re.reg_date" property="regDate"/>
+		</collection>
+		
+		<collection property="likes" javaType="List" ofType="likeDTO">
+			<result column="l.review_id" property="reviewId"/>
+			<result column="l.board_id" property="boardId"/>
+			<result column="l.reg_date" property="regDate"/>
+		</collection>
 	</resultMap>
+	
 
 	<select id="selectById" parameterType="int" resultMap="userMap">
-		select id, username, password, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
-			from user
-			where id = #{id}
+		select u.id "u.id", u.username "u.username", u.email "u.email", u.role "u.role",
+				date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date",
+			    (select count(*) from follow f where f.from_username = u.username) "u.follow_cnt",
+			    (select count(*) from follow ff where ff.to_email = u.email) "u.follower_cnt",
+			    i.file_name "i.file_name", i.file_location "i.file_location",
+			    n.id "n.id", n.user_id "n.user_id", n.object_id "n.object_id", n.d_type "n.d_type",
+			    r.id "r.id", r.content "r.content", r.video_id "r.video_id", r.board_id "r.board_id",
+			    date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date",
+			    z.id "z.id", z.video_id "z.video_id", z.part_id "z.part_id",
+			    re.review_id "re.review_id", re.board_id "re.board_id", re.content "re.content",
+			    date_format(re.reg_date, '%Y-%m-%d %H:%i:%s') "re.reg_date",
+			    l.review_id "l.review_id", l.board_id "l.board_id", 
+			    date_format(l.reg_date, '%Y-%m-%d %H:%i:%s') "l.reg_date"
+			from (user u 
+				left outer join image i 
+				on i.user_id = u.id)
+		   
+		    left outer join notify n 
+		    on  u.id = n.user_id
+		    	and n.read_date is null
+		   
+		    left outer join review r
+		    on u.id = r.user_id
+		    	and r.delete_date is null
+		   
+		    left outer join zzim z
+		    on u.id = z.user_id
+		    
+		    left outer join report re
+		    on u.id = re.user_id
+		    
+		    left outer join `like` l
+		    on u.id = l.user_id
+		    where u.id = #{id}
 	</select>
 	<select id="selectByUsername" parameterType="string" resultMap="userMap">
-		select id, username, password, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
-			from user
-			where username = #{username}
+		select u.id "u.id", u.username "u.username", u.email "u.email", u.role "u.role",
+				date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date",
+			    (select count(*) from follow f where f.from_username = u.username) "u.follow_cnt",
+			    (select count(*) from follow ff where ff.to_email = u.email) "u.follower_cnt",
+			    i.file_name "i.file_name", i.file_location "i.file_location",
+			    n.id "n.id", n.user_id "n.user_id", n.object_id "n.object_id", n.d_type "n.d_type",
+			    r.id "r.id", r.content "r.content", r.video_id "r.video_id", r.board_id "r.board_id",
+			    date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date",
+			    z.id "z.id", z.video_id "z.video_id", z.part_id "z.part_id",
+			    re.review_id "re.review_id", re.board_id "re.board_id", re.content "re.content",
+			    date_format(re.reg_date, '%Y-%m-%d %H:%i:%s') "re.reg_date",
+			    l.review_id "l.review_id", l.board_id "l.board_id", 
+			    date_format(l.reg_date, '%Y-%m-%d %H:%i:%s') "l.reg_date"
+			from (user u 
+				left outer join image i 
+				on i.user_id = u.id)
+		   
+		    left outer join notify n 
+		    on  u.id = n.user_id
+		    	and n.read_date is null
+		   
+		    left outer join review r
+		    on u.id = r.user_id
+		    	and r.delete_date is null
+		   
+		    left outer join zzim z
+		    on u.id = z.user_id
+		    
+		    left outer join report re
+		    on u.id = re.user_id
+		    
+		    left outer join `like` l
+		    on u.id = l.user_id
+		    where u.username = #{username}
 	</select>
 	<select id="selectByEmail" parameterType="string" resultMap="userMap">
-		select id, username, password, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
-			from user
-			where email = #{email}
+		select u.id "u.id", u.username "u.username", u.email "u.email", u.role "u.role",
+				date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date",
+			    (select count(*) from follow f where f.from_username = u.username) "u.follow_cnt",
+			    (select count(*) from follow ff where ff.to_email = u.email) "u.follower_cnt",
+			    i.file_name "i.file_name", i.file_location "i.file_location",
+			    n.id "n.id", n.user_id "n.user_id", n.object_id "n.object_id", n.d_type "n.d_type",
+			    r.id "r.id", r.content "r.content", r.video_id "r.video_id", r.board_id "r.board_id",
+			    date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date",
+			    z.id "z.id", z.video_id "z.video_id", z.part_id "z.part_id",
+			    re.review_id "re.review_id", re.board_id "re.board_id", re.content "re.content",
+			    date_format(re.reg_date, '%Y-%m-%d %H:%i:%s') "re.reg_date",
+			    l.review_id "l.review_id", l.board_id "l.board_id", 
+			    date_format(l.reg_date, '%Y-%m-%d %H:%i:%s') "l.reg_date"
+			from (user u 
+				left outer join image i 
+				on i.user_id = u.id)
+		   
+		    left outer join notify n 
+		    on  u.id = n.user_id
+		    	and n.read_date is null
+		   
+		    left outer join review r
+		    on u.id = r.user_id
+		    	and r.delete_date is null
+		   
+		    left outer join zzim z
+		    on u.id = z.user_id
+		    
+		    left outer join report re
+		    on u.id = re.user_id
+		    
+		    left outer join `like` l
+		    on u.id = l.user_id
+		    where u.email = #{email}
 	</select>
 	
 	<select id="selectAll" resultMap="userMap">
-		select id, username, password, email, date_format(reg_date, '%Y-%m-%d %H:%i:%s') reg_date
-			from user
+		select u.id "u.id", u.username "u.username", u.email "u.email", u.role "u.role",
+				date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date", 
+	    		i.file_name "i.file_name", i.file_location "i.file_location",
+	    		(select count(*) from follow f where f.from_username = u.username) "u.follow_cnt",
+	    		(select count(*) from follow ff where ff.to_email = u.email) "u.follower_cnt"
+			from user u 
+			left outer join image i 
+			on i.user_id = u.id
 	</select>
 	
 	<select id="selectFollowsByUsername" parameterType="string" resultType="userDTO">
@@ -57,7 +199,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert
 			into user
 			values
-			(0,#{username},#{password},#{email},now())
+			(0,#{username},#{password},'#{email}, #{role},now())
 	</insert>
 	
 	<delete id="delete" parameterType="int">

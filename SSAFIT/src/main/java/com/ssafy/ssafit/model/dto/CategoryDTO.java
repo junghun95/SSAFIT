@@ -1,5 +1,7 @@
 package com.ssafy.ssafit.model.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ReportDTO {
-	private int userId;
-	private int reviewId;
-	private int boardId;
-	private String content;
-	private String regDate;
+public class CategoryDTO {
+	private int id;
+	private String name;
+	private CategoryDTO par;
+	private List<CategoryDTO> children;
 }

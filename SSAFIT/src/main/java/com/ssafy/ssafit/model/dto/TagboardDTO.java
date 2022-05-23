@@ -6,11 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class PartDTO {
+public class TagboardDTO {
 	private int id;
-	private String name;
-
+	private int boardId;
+	private int tagId;
 }

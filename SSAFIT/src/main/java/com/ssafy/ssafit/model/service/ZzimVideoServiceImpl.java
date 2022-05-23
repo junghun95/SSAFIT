@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.ssafit.model.dao.VideoDao;
 import com.ssafy.ssafit.model.dao.ZzimVideoDao;
 import com.ssafy.ssafit.model.dto.VideoDTO;
-import com.ssafy.ssafit.model.dto.ZzimVideoDTO;
+import com.ssafy.ssafit.model.dto.ZzimDTO;
 import com.ssafy.ssafit.model.dto.request.VideoRequestDTO;
 import com.ssafy.ssafit.model.dto.response.VideoResponseDTO;
 
@@ -33,7 +33,7 @@ public class ZzimVideoServiceImpl implements ZzimVideoService{
 		videoDao.insert(videoDTO);
 
 		// like_video 에 추가
-		ZzimVideoDTO zzimVideoDTO = ZzimVideoDTO.builder()
+		ZzimDTO zzimVideoDTO = ZzimDTO.builder()
 				.videoId(videoRequestDTO.getVideoId())
 				.userId(videoRequestDTO.getUserId())
 				.partId(videoRequestDTO.getPartId())

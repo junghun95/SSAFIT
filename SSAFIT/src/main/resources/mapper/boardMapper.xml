@@ -10,7 +10,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="b.reg_date" property="regDate"/>
 		<result column="b.content" property="content"/>
 		<result column="b.view_cnt" property="viewCnt"/>
-		
+		<result column="b.review_cnt" property="reviewCnt"/>
+		<result column="b.like_cnt" property="likeCnt"/>
 		
 		<association property="user" javaType="userDTO">
 			<result column="u.id" property="id"/>
@@ -18,9 +19,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="u.email" property="email"/>
 			<result column="u.reg_date" property="regDate"/>
 		</association>
-		<collection property="parts" javaType="List" ofType="partDTO">
-			<result column="p.id" property="id"/>
-			<result column="p.name" property="name"/>
+		<association property="category" javaType="categoryDTO">
+			<result column="id" property="id"/>
+			<result column="name" property="name"/>
+			<result column="par_id" property="parId"/>
+		</association>
+		<collection property="tags" javaType="List" ofType="tagDTO">
+			<result column="t.id" property="id"/>
+			<result column="t.name" property="name"/>
 		</collection>
 		<collection property="reviews" javaType="List" ofType="reviewDTO">
 			<result column="r.id" property="id"/>
@@ -30,22 +36,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="r.video_id" property="videoId"/>
 			<result column="r.board_id" property="boardId"/>
 		</collection>
+		<collection property="images" javaType="List" ofType="imageDTO">
+			<result column="i.id" property="id"/>
+			<result column="i.file_name" property="fileName"/>
+			<result column="i.file_location" property="fileLocation"/>
+		</collection>
 	</resultMap>
 	
 	<select id="selectAll" parameterType="HashMap" resultMap="boardMap">
-		select b.id "b.id", b.title "b.title", b.content "b.content", b.view_cnt "b.view_cnt",
-				 p.id "p.id", p.name "p.name", 
-				 u.id "u.id", u.username "u.username", u.email "u.email",
-				date_format(b.reg_date, '%Y-%m-%d %H:%i:%s') "b.reg_date",
-				date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date"
-			from (board b inner join partboard bp 
-				on b.id = bp.board_id)
-        		inner join user u
-				on u.id = b.user_id
-            	inner join part p
-				on p.id = bp.part_id
-			where 
-				b.id > 0
+		select  b.id "b.id", b.title "b.title",
+				b.content "b.content", b.view_cnt "b.view_cnt", 
+				date_format(b.reg_date, '%Y-%m-%d %H:%i:%s') "b.reg_date", 
+        		u.id "u.id", u.username "u.username", u.email "u.email",
+        		date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date",
+        		c.id "c.id", c.name "c.name",
+        		t.id, t.name,
+				(select count(*) from `like` l where l.board_id = b.id) "b.like_cnt",
+        		(select count(*) from review r where r.board_id = b.id) "b.review_cnt"
+			from 
+				(board b inner join user u 
+					on b.user_id = u.id
+					and b.delete_date is null
+					inner join category c
+					on b.category_id = c.id)
+	    	left outer join 
+	        	(tagboard tb
+					inner join tag t
+					on tb.tag_id = t.id)
+			on b.id = tb.board_id
+			order by b.id desc
 			<choose>
 				<when test="mode == 1">
 					and u.username like concat('%',#{key},'%')
@@ -55,37 +74,54 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					or b.content like concat('%',#{key},'%'))
 				</when>
 			</choose>
-			<if test="parts != ''">
-				and p.id in (#{parts})				
+			<if test="tags != ''">
+				and t.id in (#{tags})				
 			</if>
 			order by b.id desc
 			
 	</select>
 	
 	<select id="selectById" parameterType="int" resultMap="boardMap">
-		select b.id "b.id", b.title "b.title", b.content "b.content", b.view_cnt "b.view_cnt",
-				 p.id "p.id", p.name "p.name", 
-				 u.id "u.id", u.username "u.username", u.email "u.email",
-				 r.id "r.id", r.content "r.content", r.user_id "r.user_id", r.board_id "r.board_id", 
-				date_format(b.reg_date, '%Y-%m-%d %H:%i:%s') "b.reg_date",
-				date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date",
-				date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date"
-			from (board b inner join partboard bp 
-				on b.id = bp.board_id)
-        		inner join user u
-				on u.id = b.user_id
-            	inner join part p
-				on p.id = bp.part_id
-				inner join review r
-				on r.board_id = b.id
-			where b.id = #{id}
+		select  b.id "b.id", b.title "b.title",
+				b.content "b.content", b.view_cnt "b.view_cnt", 
+				date_format(b.reg_date, '%Y-%m-%d %H:%i:%s') "b.reg_date", 
+        		u.id "u.id", u.username "u.username", u.email "u.email",
+        		date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date",
+        		c.id "c.id", c.name "c.name",
+        		t.id, t.name,
+        		r.id "r.id", r.content "r.content", r.user_id "r.user_id", 
+        		date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date",
+       			date_format(r.delete_date, '%Y-%m-%d %H:%i:%s') "r.delete_date",
+        		i.id "i.id", i.file_name "i.file_name", i.file_location "i.file_location",
+				(select count(*) from `like` l where l.board_id = b.id) "b.like_cnt",
+        		(select count(*) from review r where r.board_id = b.id) "b.review_cnt"
+			from 
+				(board b inner join user u 
+					on b.user_id = u.id
+					and b.delete_date is null
+					and b.id = #{id}
+					inner join category c
+					on b.category_id = c.id)
+	    	left outer join 
+	        	(tagboard tb
+				inner join tag t
+				on tb.tag_id = t.id)
+			on b.id = tb.board_id
+			left outer join
+				review r
+				on b.id = r.board_id
+			left outer join
+				(imageboard ib 
+				inner join image i
+				on ib.image_id = i.id)
+			on b.id = ib.board_id
 	</select>
 	
 	<insert id="insert" parameterType="boardDTO">
 		insert
 			into board
 			values
-			(0,#{title}, #{content}, #{user.getUsername()}, #{0}, now())
+			(0,#{title}, #{content}, #{user.getUsername()}, 0, now(), null, #{category.getId()})
 	</insert>
 	
 	<update id="update" parameterType="boardDTO">
@@ -94,7 +130,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			set
 			content = #{content},
 			title = #{title},
-			view_cnt = #{viewCnt}
+			view_cnt = #{viewCnt},
+			delete_date = #{deleteDate},
+			category_id = #{category.getId()}
 			where id = #{id}
 	</update>
 	

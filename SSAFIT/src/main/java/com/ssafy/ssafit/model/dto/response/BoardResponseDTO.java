@@ -1,17 +1,16 @@
 package com.ssafy.ssafit.model.dto.response;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.ssafy.ssafit.model.dto.BoardDTO;
-import com.ssafy.ssafit.model.dto.PartDTO;
+import com.ssafy.ssafit.model.dto.CategoryDTO;
+import com.ssafy.ssafit.model.dto.ImageDTO;
+import com.ssafy.ssafit.model.dto.TagDTO;
 import com.ssafy.ssafit.model.dto.ReviewDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -25,9 +24,11 @@ public class BoardResponseDTO {
 		private String writer;
 		private String regDate;
 		private int viewCnt;
-
-		private List<PartDTO> parts;
+		
+		private CategoryDTO category;
+		private List<TagDTO> tags;
 		private List<ReviewDTO> reviews;
+		private List<ImageDTO> images;
 
 		public static BoardResponseDTO of(BoardDTO boardDTO) {
 			return BoardResponseDTO.builder()
@@ -36,7 +37,9 @@ public class BoardResponseDTO {
 					.content(boardDTO.getContent())
 					.writer(boardDTO.getUser().getUsername())
 					.viewCnt(boardDTO.getViewCnt())
-					.parts(boardDTO.getParts())
+					.tags(boardDTO.getTags())
+					.category(boardDTO.getCategory())
+					.images(boardDTO.getImages())
 					.reviews(boardDTO.getReviews()).build();
 		}
 	

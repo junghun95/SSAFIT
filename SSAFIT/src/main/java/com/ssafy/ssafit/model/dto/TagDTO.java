@@ -6,13 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class ReportDTO {
-	private int userId;
-	private int reviewId;
-	private int boardId;
-	private String content;
-	private String regDate;
+public class TagDTO {
+	private int id;
+	private String name;
 }
