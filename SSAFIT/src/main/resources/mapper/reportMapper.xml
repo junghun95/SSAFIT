@@ -8,6 +8,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insert" parameterType="reportDTO">
 		insert
 			into report
-			values(#{userId},#{reviewId},#{boardId})
+			values(#{userId},#{reviewId},#{boardId},"", now())
 	</insert>
 </mapper>
