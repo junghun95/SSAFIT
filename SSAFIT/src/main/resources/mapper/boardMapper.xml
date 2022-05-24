@@ -20,9 +20,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="u.reg_date" property="regDate"/>
 		</association>
 		<association property="category" javaType="categoryDTO">
-			<result column="id" property="id"/>
-			<result column="name" property="name"/>
-			<result column="par_id" property="parId"/>
+			<result column="c.id" property="id"/>
+			<result column="c.name" property="name"/>
+			<result column="c.par_id" property="parId"/>
 		</association>
 		<collection property="tags" javaType="List" ofType="tagDTO">
 			<result column="t.id" property="id"/>
@@ -50,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         		u.id "u.id", u.username "u.username", u.email "u.email",
         		date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date",
         		c.id "c.id", c.name "c.name",
-        		t.id, t.name,
+        		t.id "t.id", t.name "t.name",
 				(select count(*) from `like` l where l.board_id = b.id) "b.like_cnt",
         		(select count(*) from review r where r.board_id = b.id) "b.review_cnt"
 			from 
@@ -59,13 +59,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					and b.delete_date is null
 					inner join category c
 					on b.category_id = c.id
-					and c.name like #{category})
+					and c.url like concat('%',#{category},'%'))
 	    	left outer join 
 	        	(tagboard tb
 					inner join tag t
 					on tb.tag_id = t.id)
 			on b.id = tb.board_id
-			order by b.id desc
+			where
+			b.id  > 0
 			<choose>
 				<when test="mode == 1">
 					and u.username like concat('%',#{key},'%')
@@ -79,6 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				and t.id in (#{tags})				
 			</if>
 			order by b.id desc
+			limit #{page}, 5
 			
 	</select>
 	
@@ -89,7 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         		u.id "u.id", u.username "u.username", u.email "u.email",
         		date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date",
         		c.id "c.id", c.name "c.name",
-        		t.id, t.name,
+        		t.id "t.id", t.name "t.name",
         		r.id "r.id", r.content "r.content", r.user_id "r.user_id", 
         		date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date",
        			date_format(r.delete_date, '%Y-%m-%d %H:%i:%s') "r.delete_date",
@@ -122,7 +124,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert
 			into board
 			values
-			(0,#{title}, #{content}, #{user.getUsername()}, 0, now(), null, #{category.getId()})
+			(0,#{title}, #{content}, #{user.id}, 0, now(), null, #{category.id})
 	</insert>
 	
 	<update id="update" parameterType="boardDTO">
@@ -133,7 +135,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			title = #{title},
 			view_cnt = #{viewCnt},
 			delete_date = #{deleteDate},
-			category_id = #{category.getId()}
+			category_id = #{category.id}
 			where id = #{id}
 	</update>
 	

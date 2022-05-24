@@ -11,5 +11,5 @@ public interface BoardDao {
 	public void update(BoardDTO boardDTO);
 	
 	public BoardDTO selectById(int id);
-	public List<BoardDTO> selectAll(Map<String, String> params);
+	public List<BoardDTO> selectAll(Map<String, Object> params);
 }

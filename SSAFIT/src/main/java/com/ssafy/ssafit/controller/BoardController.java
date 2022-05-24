@@ -48,11 +48,15 @@ public class BoardController {
 	public ResponseEntity<?> list(
 								@RequestParam(defaultValue = "0") String mode,
 								@RequestParam(defaultValue = "") String key,
-								@RequestParam(defaultValue = "") String parts){
-		Map<String, String>params = new HashMap<>();
+								@RequestParam(defaultValue = "") String tags,
+								@RequestParam(defaultValue = "") String category,
+								@RequestParam(defaultValue = "0") int page){
+		Map<String, Object>params = new HashMap<>();
 		params.put("mode",mode);
 		params.put("key",key);
-		params.put("parts",parts);
+		params.put("tags",tags);
+		params.put("category",category);
+		params.put("page",page);
 		return new ResponseEntity<>(
 				responseUtil.success(
 						boardService.getAll(params).stream().map(b->BoardResponseDTO.of(b)).collect(Collectors.toList())

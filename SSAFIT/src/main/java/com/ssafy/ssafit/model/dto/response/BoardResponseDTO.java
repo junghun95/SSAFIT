@@ -6,6 +6,7 @@ import com.ssafy.ssafit.model.dto.BoardDTO;
 import com.ssafy.ssafit.model.dto.CategoryDTO;
 import com.ssafy.ssafit.model.dto.ImageDTO;
 import com.ssafy.ssafit.model.dto.TagDTO;
+import com.ssafy.ssafit.model.dto.UserDTO;
 import com.ssafy.ssafit.model.dto.ReviewDTO;
 
 import lombok.AllArgsConstructor;
@@ -21,10 +22,12 @@ public class BoardResponseDTO {
 		private int id;
 		private String title;
 		private String content;
-		private String writer;
 		private String regDate;
 		private int viewCnt;
+		private int reviewCnt;
+		private int likeCnt;
 		
+		private UserDTO user;
 		private CategoryDTO category;
 		private List<TagDTO> tags;
 		private List<ReviewDTO> reviews;
@@ -35,9 +38,12 @@ public class BoardResponseDTO {
 					.id(boardDTO.getId())
 					.title(boardDTO.getTitle())
 					.content(boardDTO.getContent())
-					.writer(boardDTO.getUser().getUsername())
+					.regDate(boardDTO.getRegDate())
+					.user(boardDTO.getUser())
 					.viewCnt(boardDTO.getViewCnt())
 					.tags(boardDTO.getTags())
+					.reviewCnt(boardDTO.getReviewCnt())
+					.likeCnt(boardDTO.getLikeCnt())
 					.category(boardDTO.getCategory())
 					.images(boardDTO.getImages())
 					.reviews(boardDTO.getReviews()).build();

@@ -45,7 +45,7 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<BoardDTO> getAll(Map<String, String> params) {
+	public List<BoardDTO> getAll(Map<String, Object> params) {
 		return boardDao.selectAll(params);
 	}
 

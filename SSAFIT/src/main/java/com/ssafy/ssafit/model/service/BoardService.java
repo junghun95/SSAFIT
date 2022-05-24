@@ -12,5 +12,5 @@ public interface BoardService {
 	
 	public BoardDTO read(int id);
 	public BoardDTO getOneById(int id);
-	public List<BoardDTO> getAll(Map<String, String> params);
+	public List<BoardDTO> getAll(Map<String, Object> params);
 }
