@@ -53,6 +53,7 @@ public class UserResponseDTO {
 				.notifies(userDTO.getNotifies())
 				.likes(userDTO.getLikes())
 				.images(userDTO.getImages())
+				.zzims(userDTO.getZzims())
 				.build();
 	}
 
