@@ -3,7 +3,6 @@ package com.ssafy.ssafit.model.service;
 import java.util.List;
 
 import com.ssafy.ssafit.model.dto.UserDTO;
-import com.ssafy.ssafit.model.dto.VideoDTO;
 
 public interface UserService {
 	public void join(UserDTO userDTO);

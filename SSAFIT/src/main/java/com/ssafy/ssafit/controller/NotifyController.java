@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.ssafit.model.service.NotifyService;
 import com.ssafy.ssafit.util.ResponseUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,9 @@ public class NotifyController {
 	private final NotifyService notifyService;
 	private final ResponseUtil responseUtil;
 	
-	@PostMapping("/")
-	public ResponseEntity<?> create(){ 
-		log.info("NotifyController: create() called");
-	}
+//	@PostMapping("/")
+//	public ResponseEntity<?> create(){ 
+//		log.info("NotifyController: create() called");
+//	}
 
 }

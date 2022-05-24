@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.ssafit.model.service.LikeService;
 import com.ssafy.ssafit.util.ResponseUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,8 @@ public class LikeController {
 	private final LikeService likeService;
 	private final ResponseUtil responseUtil;
 	
-	@PostMapping("/")
-	public ResponseEntity<?>() like(){
-		
-	}
+//	@PostMapping("/")
+//	public ResponseEntity<?>() like(){
+//		
+//	}
 }
