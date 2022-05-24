@@ -5,9 +5,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.ssafy.ssafit.model.dao.ZzimDao">
 	<resultMap type="zzimDTO" id="zzimMap">
-		
-		
+		<result column="video_id" property="videoID"/>
+		<result column="user_id" property="userId"/>
+		<result column="part_id" property="partId"/>
 	</resultMap>
-	 
+	
+	<select id="selcetAll" resultMap="zzimMap" parameterType="int">
+		select *
+		from zzim
+		where user_id = #{userId}
+	</select>
+	
+	<insert id="insert" parameterType="zzimDTO">
+		insert into zzim
+		values (0, #{videoId}, #{userID}, #{partID})
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		delete 
+		from zzim 
+		where id = #{id}
+	</delete>
 	
 </mapper>
