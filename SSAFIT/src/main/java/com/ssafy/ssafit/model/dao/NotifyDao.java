@@ -1,5 +1,5 @@
 package com.ssafy.ssafit.model.dao;
 
-public interface NodifyDao {
+public interface NotifyDao {
 
 }

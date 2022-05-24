@@ -26,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class SocketTextHandler extends TextWebSocketHandler {
 	private final Set<WebSocketSession> sessions = ConcurrentHashMap.newKeySet();
 	private final String NOTICE = "새로운 공지사항이 올라왔습니다";
+	private final String SELF = "님 환영합니다!";
 	private final String TAG = "{}님이 {}게시글에 회원님을 태그했습니다";
 	private final String REVIEW = "{}님이 {}게시글에 댓글을 달았습니다.";	
 	private final String LIKE = "{}님이 {}을 좋아합니다.";	
@@ -43,8 +44,8 @@ public class SocketTextHandler extends TextWebSocketHandler {
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+		log.info(message.getPayload());
 		JSONObject jObject =new JSONObject(message.getPayload());
-		
 		String type = jObject.getString("type");
 		String fromUsername = jObject.getString("from-username");
 		String toUsername = jObject.getString("to-username");
@@ -69,7 +70,11 @@ public class SocketTextHandler extends TextWebSocketHandler {
 		object.put("to",toUsername);
 		
 		if(type.equals("self")) {
-			userSessionMap.put(type,session);
+			log.info(fromUsername,session);
+			userSessionMap.put(fromUsername,session);
+			msg = fromUsername+SELF;
+			object.put("msg",msg);
+			session.sendMessage(new TextMessage(object.toString()));
 		}
 		else if(type.equals("notice")) {
 			object.put("msg",NOTICE);
@@ -91,6 +96,7 @@ public class SocketTextHandler extends TextWebSocketHandler {
 			else if(type.equals("tag")) {
 				msg = TAG;
 			}
+			object.put("msg",msg);
 			toSession.sendMessage(new TextMessage(object.toString()));
 		}
 	}
