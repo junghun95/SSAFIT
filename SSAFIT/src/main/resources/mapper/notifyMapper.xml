@@ -9,13 +9,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="user_id" property="userId"/>
 		<result column="object_id" property="objectId"/>
 		<result column="d_type" property="dType"/>
+		<result column="read_date" property="readDate"/>
 	</resultMap>
 
 	<insert id="insert" parameterType="notifyDTO">
 		insert 
 			into notify
 			values
-			(0,#{userId}, #{objectId}, #{dType}, null)
+			(0,#{userId}, #{objectId}, #{dType.value}, null)
 	</insert>
 	
 	<select id="selectByUserId" parameterType="int" resultMap="notifyMap">

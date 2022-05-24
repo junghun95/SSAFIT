@@ -27,9 +27,9 @@ public class SocketTextHandler extends TextWebSocketHandler {
 	private final Set<WebSocketSession> sessions = ConcurrentHashMap.newKeySet();
 	private final String NOTICE = "새로운 공지사항이 올라왔습니다";
 	private final String SELF = "님 환영합니다!";
-	private final String TAG = "{}님이 {}게시글에 회원님을 태그했습니다";
-	private final String REVIEW = "{}님이 {}게시글에 댓글을 달았습니다.";	
-	private final String LIKE = "{}님이 {}을 좋아합니다.";	
+	private final String TAG = "{}님이 회원님을 태그했습니다";
+	private final String REVIEW = "{}님이 회원님의 게시글에 댓글을 달았습니다.";	
+	private final String LIKE = "{}님이 회원님의 게시글을 좋아합니다.";	
 	private final Map<String, WebSocketSession> userSessionMap = new HashMap<>();
 
 	private static final Logger log = LoggerFactory.getLogger(SocketTextHandler.class);
@@ -54,12 +54,14 @@ public class SocketTextHandler extends TextWebSocketHandler {
 		int id = jObject.getInt("id");
 		String msg = "";
 		
-		notifyService.notice(
-				NotifyDTO.builder()
-				.userId(to)
-				.objectId(id)
-				.dType(DType.fromString(type))
-				.build());
+		if(!type.equals("self")) {
+			notifyService.notice(
+					NotifyDTO.builder()
+					.userId(to)
+					.objectId(id)
+					.dType(DType.fromString(type))
+					.build());
+		}
 		
 		WebSocketSession toSession = userSessionMap.get(toUsername);
 		TextMessage textMsg = null;
