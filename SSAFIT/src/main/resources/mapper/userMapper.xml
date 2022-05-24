@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap id="userMap" type="userDTO">
 		<result column="u.id" property="id"/>
 		<result column="u.username" property="username"/>
+		<result column="password" property="password"/>
 		<result column="u.email" property="email"/>
 		<result column="u.password" property="password"/>
 		<result column="u.reg_date" property="regDate"/>
@@ -107,7 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    re.review_id "re.review_id", re.board_id "re.board_id", re.content "re.content",
 			    date_format(re.reg_date, '%Y-%m-%d %H:%i:%s') "re.reg_date",
 			    l.review_id "l.review_id", l.board_id "l.board_id", 
-			    date_format(l.reg_date, '%Y-%m-%d %H:%i:%s') "l.reg_date"
+			    date_format(l.reg_date, '%Y-%m-%d %H:%i:%s') "l.reg_date", password
 			from (user u 
 				left outer join image i 
 				on i.user_id = u.id)

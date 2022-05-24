@@ -6,6 +6,8 @@ import com.ssafy.ssafit.exception.PWIncorrectException;
 import com.ssafy.ssafit.exception.UserNotFound;
 import com.ssafy.ssafit.model.dao.UserDao;
 import com.ssafy.ssafit.model.dto.UserDTO;
+import com.ssafy.ssafit.model.dto.response.JWTResponseDTO;
+import com.ssafy.ssafit.model.dto.response.LoginResponseDTO;
 import com.ssafy.ssafit.util.SHA256;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,21 @@ public class AuthServiceImpl implements AuthService{
 		}else {
 			throw new PWIncorrectException();
 		}
+	}
+
+	@Override
+	public LoginResponseDTO getLoginResponseDTO(String username, String password, JWTResponseDTO jwtResponseDTO) {
+		UserDTO userDTO = userDao.selectByUsername(username).get();
+		LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
+		loginResponseDTO.builder()
+						.username(username)
+						.email(userDTO.getEmail())
+						.regDate(userDTO.getRegDate())
+						.authorization(jwtResponseDTO.getAccessToken())
+						.reviews(userDTO.getReviews())
+						.zzims(userDTO.getZzims())
+						.build();
+		return loginResponseDTO;
 	}
 
 }

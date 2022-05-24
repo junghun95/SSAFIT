@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.ssafit.model.dto.request.LoginRequestDTO;
 import com.ssafy.ssafit.model.dto.response.JWTResponseDTO;
+import com.ssafy.ssafit.model.dto.response.LoginResponseDTO;
 import com.ssafy.ssafit.model.service.AuthService;
 import com.ssafy.ssafit.util.JWTUtil;
 import com.ssafy.ssafit.util.ResponseUtil;
@@ -29,7 +30,8 @@ public class AuthController {
 	public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO){
 		try {
 			if (authService.check(loginRequestDTO.getUsername(), loginRequestDTO.getPassword())) {
-				return new ResponseEntity<>(responseUtil.success("token generation", JWTResponseDTO.of(jwtUtil.createToken("username", loginRequestDTO.getUsername()))), HttpStatus.ACCEPTED);
+				LoginResponseDTO loginResponseDTO = authService.getLoginResponseDTO(loginRequestDTO.getUsername(), loginRequestDTO.getPassword(), JWTResponseDTO.of(jwtUtil.createToken("username", loginRequestDTO.getUsername())));
+				return new ResponseEntity<>(responseUtil.success("login success", loginResponseDTO), HttpStatus.ACCEPTED);
 			} else {			
 				return new ResponseEntity<>(responseUtil.success("fail"), HttpStatus.ACCEPTED);
 			}
