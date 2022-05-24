@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			(0,#{userId}, #{objectId}, #{dType}, null)
 	</insert>
 	
-	<select id="selectByUserId" parameterMap="int" resultMap="notifyMap">
+	<select id="selectByUserId" parameterType="int" resultMap="notifyMap">
 		select *
 			from notify
 			where user_id = #{id}

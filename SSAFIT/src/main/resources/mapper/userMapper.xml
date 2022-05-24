@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="u.id" property="id"/>
 		<result column="u.username" property="username"/>
 		<result column="u.email" property="email"/>
+		<result column="u.password" property="password"/>
 		<result column="u.reg_date" property="regDate"/>
 		<result column="u.role" property="role"/>
 		<result column="u.follow_cnt" property="followCnt"/>
@@ -55,9 +56,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</collection>
 	</resultMap>
 	
+	
 
 	<select id="selectById" parameterType="int" resultMap="userMap">
-		select u.id "u.id", u.username "u.username", u.email "u.email", u.role "u.role",
+		select u.id "u.id", u.username "u.username", u.password "u.password", u.email "u.email", u.role "u.role",
 				date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date",
 			    (select count(*) from follow f where f.from_username = u.username) "u.follow_cnt",
 			    (select count(*) from follow ff where ff.to_email = u.email) "u.follower_cnt",
@@ -93,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    where u.id = #{id}
 	</select>
 	<select id="selectByUsername" parameterType="string" resultMap="userMap">
-		select u.id "u.id", u.username "u.username", u.email "u.email", u.role "u.role",
+		select u.id "u.id", u.username "u.username", u.password "u.password", u.email "u.email", u.role "u.role",
 				date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date",
 			    (select count(*) from follow f where f.from_username = u.username) "u.follow_cnt",
 			    (select count(*) from follow ff where ff.to_email = u.email) "u.follower_cnt",
@@ -129,7 +131,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    where u.username = #{username}
 	</select>
 	<select id="selectByEmail" parameterType="string" resultMap="userMap">
-		select u.id "u.id", u.username "u.username", u.email "u.email", u.role "u.role",
+		select u.id "u.id", u.username "u.username", u.password "u.password", u.email "u.email", u.role "u.role",
 				date_format(u.reg_date, '%Y-%m-%d %H:%i:%s') "u.reg_date",
 			    (select count(*) from follow f where f.from_username = u.username) "u.follow_cnt",
 			    (select count(*) from follow ff where ff.to_email = u.email) "u.follower_cnt",

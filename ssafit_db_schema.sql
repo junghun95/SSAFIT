@@ -40,6 +40,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `ssafit`.`category` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
+  `url` VARCHAR(100) NOT NULL,
   `par_id` INT NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   INDEX `category_self_fk_idx` (`par_id` ASC) VISIBLE,
