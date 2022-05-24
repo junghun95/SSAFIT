@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService{
 	private final UserDao userDAO;
-	private final ZzimVideoService zzimVideoService;
 	
 	@Override
 	@Transactional
@@ -69,7 +68,6 @@ public class UserServiceImpl implements UserService{
 		UserDTO user = userDAO.selectById(id).orElseThrow(()->new UserNotFound("존재하지 않는 유저입니다."));
 		user.setFollowers(getFollowers(user.getUsername()));
 		user.setFollows(getFollows(user.getUsername()));
-		user.setLikeVideos(zzimVideoService.getZzimList(user.getId()));
 		return user;
 	}
 	
@@ -78,7 +76,6 @@ public class UserServiceImpl implements UserService{
 		UserDTO user = userDAO.selectByUsername(username).orElseThrow(()->new UserNotFound("존재하지 않는 유저입니다."));
 		user.setFollowers(getFollowers(user.getUsername()));
 		user.setFollows(getFollows(user.getUsername()));
-		user.setLikeVideos(zzimVideoService.getZzimList(user.getId()));
 		return user;
 	}
 
@@ -87,7 +84,6 @@ public class UserServiceImpl implements UserService{
 		UserDTO user = userDAO.selectByEmail(email).orElseThrow(()->new UserNotFound("존재하지 않는 유저입니다."));
 		user.setFollowers(getFollowers(user.getUsername()));
 		user.setFollows(getFollows(user.getUsername()));
-		user.setLikeVideos(zzimVideoService.getZzimList(user.getId()));
 		return user;		
 	}
 

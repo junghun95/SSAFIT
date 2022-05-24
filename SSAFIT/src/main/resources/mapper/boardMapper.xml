@@ -58,7 +58,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					on b.user_id = u.id
 					and b.delete_date is null
 					inner join category c
-					on b.category_id = c.id)
+					on b.category_id = c.id
+					and c.name like #{category})
 	    	left outer join 
 	        	(tagboard tb
 					inner join tag t

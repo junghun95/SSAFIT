@@ -40,12 +40,12 @@ public class ReportService {
 		if(cnt == MAX) {
 			if(type.equals("r")) {
 				ReviewDTO review = reviewService.getReview(id);
-				review.setIsDeleteNY("Y");
+//				review.getDeleteDate("Y");
 				reviewService.modifyReview(review);
 			}
 			else {
 				BoardDTO board = boardService.getOneById(id);
-				board.setIsDeleteNY("Y");
+//				board.setIsDeleteNY("Y");
 				boardService.modify(board);
 			}
 			return;
