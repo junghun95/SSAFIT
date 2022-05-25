@@ -18,13 +18,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insert" parameterType="zzimDTO">
 		insert into zzim
-		values (0, #{videoId}, #{userID}, #{partID})
+		values (0, #{videoId}, #{userId}, #{tagName})
 	</insert>
 	
-	<delete id="delete" parameterType="int">
+	<delete id="delete" parameterType="java.util.HashMap">
 		delete 
 		from zzim 
-		where id = #{id}
+		where video_id = #{videoId}
+		and user_id = #{user_id}
 	</delete>
 	
 </mapper>

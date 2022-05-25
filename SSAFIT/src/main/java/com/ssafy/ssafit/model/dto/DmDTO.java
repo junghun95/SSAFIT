@@ -5,19 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDTO {
+@NoArgsConstructor
+@Builder
+public class DmDTO {
 	private int id;
+	private int fromUserId;
+	private int toUserId;
 	private String content;
-	private int userId;
 	private String regDate;
-	private String videoId;
-	private int boardId;
-	private String deleteDate;
-	
-	private String userName;
-	private int likeCnt;
 }

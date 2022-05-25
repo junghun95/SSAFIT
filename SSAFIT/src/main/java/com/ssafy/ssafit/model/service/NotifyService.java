@@ -4,7 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.ssafy.ssafit.model.dao.DmDao;
+import com.ssafy.ssafit.model.dao.LikeDao;
 import com.ssafy.ssafit.model.dao.NotifyDao;
+import com.ssafy.ssafit.model.dao.ReviewDao;
+import com.ssafy.ssafit.model.dao.TagDao;
+import com.ssafy.ssafit.model.dto.LikeDTO;
 import com.ssafy.ssafit.model.dto.NotifyDTO;
 
 import lombok.RequiredArgsConstructor;

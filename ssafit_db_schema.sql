@@ -278,6 +278,14 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`zzim` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+-- -----------------------------------------------------
+-- Table `ssafit`.`dm`
+-- -----------------------------------------------------
+create table `ssafit`.`dm` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+    primary key (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

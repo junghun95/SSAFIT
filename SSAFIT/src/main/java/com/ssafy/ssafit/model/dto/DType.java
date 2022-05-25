@@ -3,7 +3,7 @@ package com.ssafy.ssafit.model.dto;
 
 
 public enum DType {
-	NOTICE("Notice"), REVIEW("Review"), LIKE("Like"), TAG("Tag");
+	NOTICE("Notice"), REVIEW("Review"), LIKE("Like"), TAG("Tag"), DM("Dm");
 	private String value;
 	
 	DType(String value) {

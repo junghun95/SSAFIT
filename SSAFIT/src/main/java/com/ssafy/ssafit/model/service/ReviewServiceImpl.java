@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 import com.ssafy.ssafit.model.dao.ReviewDao;
 import com.ssafy.ssafit.model.dto.ReviewDTO;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService{
 
-	private ReviewDao reviewDao;
+	private final ReviewDao reviewDao;
 	
 	@Override
 	public List<ReviewDTO> getVideoReviewList(String id) {
