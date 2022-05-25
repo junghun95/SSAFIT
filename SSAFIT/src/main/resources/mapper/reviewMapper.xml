@@ -14,15 +14,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="video_id" property="videoId"/>
 		<result column="board_id" property="boardId"/>
 		<result column="delete_date" property="deleteDate"/>
+		<result column="username" property="userName"/>
+		<result column="like_cnt" property="likeCnt"/>
+		
 	</resultMap>
 	
 	<select id="selectVideoReview" resultMap="reviewMap" parameterType="string">
-		select *
-		from review
+		select id, content, user_id, reg_date, video_id, board_id, delete_date,
+			   (select u.username from user u where u.id = r.user_id) "username", 
+			   (select count(*) from `like` l where l.review_id = r.id) "like_cnt"
+		from review r
 		where video_id = #{id}
 		and delete_date is null
 	</select>
-	<select id="selectReview" resultMap="reviewMap" parameterType="string">
+	<select id="selectReview" resultMap="reviewMap" parameterType="int">
 		select *
 		from review
 		where review_id = #{id}

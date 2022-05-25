@@ -1,5 +1,7 @@
 package com.ssafy.ssafit.controller;
 
+import java.util.HashMap;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,9 +40,12 @@ public class ZzimController {
 		return new ResponseEntity<>(responseUtil.success("zzim success"), HttpStatus.ACCEPTED);
 	}
 	
-	@DeleteMapping("/remove/{id}")
-	public ResponseEntity<?> remove(int id){
-		zzimService.removeZzim(id);
+	@DeleteMapping("/remove")
+	public ResponseEntity<?> remove(@RequestBody String videoId, int userId){
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("videoId", videoId);
+		params.put("userId", userId);
+		zzimService.removeZzim(params);
 		return new ResponseEntity<>(responseUtil.success("delete zzim success"), HttpStatus.ACCEPTED);
 	}
 }

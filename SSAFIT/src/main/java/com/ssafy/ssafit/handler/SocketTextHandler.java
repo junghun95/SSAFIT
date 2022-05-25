@@ -30,6 +30,7 @@ public class SocketTextHandler extends TextWebSocketHandler {
 	private final String TAG = "{}님이 회원님을 태그했습니다";
 	private final String REVIEW = "{}님이 회원님의 게시글에 댓글을 달았습니다.";	
 	private final String LIKE = "{}님이 회원님의 게시글을 좋아합니다.";	
+	private final String DM = "{}님이 회원님에게 DM을 보냈습니다.";
 	private final Map<String, WebSocketSession> userSessionMap = new HashMap<>();
 
 	private static final Logger log = LoggerFactory.getLogger(SocketTextHandler.class);
@@ -54,7 +55,7 @@ public class SocketTextHandler extends TextWebSocketHandler {
 		int id = jObject.getInt("id");
 		String msg = "";
 		
-		if(!type.equals("self")) {
+		if(!type.equalsIgnoreCase("self")) {
 			notifyService.notice(
 					NotifyDTO.builder()
 					.userId(to)
@@ -72,14 +73,14 @@ public class SocketTextHandler extends TextWebSocketHandler {
 		object.put("from",fromUsername);
 		object.put("to",toUsername);
 		
-		if(type.equals("self")) {
+		if(type.equalsIgnoreCase("self")) {
 			log.info(fromUsername,session);
 			userSessionMap.put(fromUsername,session);
 			msg = fromUsername+SELF;
 			object.put("msg",msg);
 			session.sendMessage(new TextMessage(object.toString()));
 		}
-		else if(type.equals("notice")) {
+		else if(type.equalsIgnoreCase("notice")) {
 			object.put("msg",NOTICE);
 			sessions.stream().forEach(s->{
 				try {
@@ -90,16 +91,20 @@ public class SocketTextHandler extends TextWebSocketHandler {
 			});
 		}
 		else if(toSession != null) {
-			if(type.equals("like")) {
-				msg = LIKE;
+			if(type.equalsIgnoreCase("like")) {
+				msg = LIKE.replace("{}", fromUsername);
 			}
-			else if(type.equals("review")) {
-				msg = REVIEW;
+			else if(type.equalsIgnoreCase("review")) {
+				msg = REVIEW.replace("{}", fromUsername);
 			}
-			else if(type.equals("tag")) {
-				msg = TAG;
+			else if(type.equalsIgnoreCase("tag")) {
+				msg = TAG.replace("{}", fromUsername);
+			}
+			else if(type.equalsIgnoreCase("dm")) {
+				msg = DM.replace("{}", fromUsername);
 			}
 			object.put("msg",msg);
+//			session.sendMessage(new TextMessage(object.toString()));
 			toSession.sendMessage(new TextMessage(object.toString()));
 		}
 	}
