@@ -45,4 +45,20 @@ public class AuthController {
 			return new ResponseEntity<>(responseUtil.success("fail"), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@PostMapping("/login/social")
+	public ResponseEntity<?> loginSocial(@RequestBody LoginRequestDTO loginRequestDTO){
+		try {
+			if (authService.checkSocial(loginRequestDTO.getUsername(), loginRequestDTO.getPassword())) {
+				LoginResponseDTO loginResponseDTO = authService.getLoginResponseDTO(loginRequestDTO.getUsername(), loginRequestDTO.getPassword(), JWTResponseDTO.of(jwtUtil.createToken("username", loginRequestDTO.getUsername())));
+				log.info(loginResponseDTO.toString());
+				return new ResponseEntity<>(responseUtil.success("login success", JWTResponseDTO.of(jwtUtil.createToken("username", loginRequestDTO.getUsername()))), HttpStatus.ACCEPTED);
+			} else {			
+				return new ResponseEntity<>(responseUtil.success("fail"), HttpStatus.ACCEPTED);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(responseUtil.success("fail"), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

@@ -112,7 +112,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    r.id "r.id", r.content "r.content", r.video_id "r.video_id", r.board_id "r.board_id",
 			    date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date",
 			    z.id "z.id", z.video_id "z.video_id", z.tag_id "z.tag_id", t.name "z.tag_name",
-			    z.title ,z.channel_title "z.channelTitle", z.description,
+			    z.title "z.title",z.channel_title "z.channelTitle", z.description,
 			    date_format(z.publish_time, '%Y-%m-%d %H:%i:%s') "z.publishTime",
 			    re.review_id "re.review_id", re.board_id "re.board_id", re.content "re.content",
 			    date_format(re.reg_date, '%Y-%m-%d %H:%i:%s') "re.reg_date",

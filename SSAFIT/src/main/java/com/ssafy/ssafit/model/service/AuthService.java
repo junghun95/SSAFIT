@@ -7,4 +7,6 @@ public interface AuthService {
 	boolean check(String username, String password) throws Exception;
 
 	LoginResponseDTO getLoginResponseDTO(String username, String password, JWTResponseDTO jwtResponseDTO);
+
+	boolean checkSocial(String username, String password) throws Exception;
 }

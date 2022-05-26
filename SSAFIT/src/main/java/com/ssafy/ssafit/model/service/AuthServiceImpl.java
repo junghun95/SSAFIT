@@ -29,6 +29,19 @@ public class AuthServiceImpl implements AuthService{
 			throw new PWIncorrectException();
 		}
 	}
+	
+	@Override
+	public boolean checkSocial(String username, String password) throws Exception{
+		UserDTO userDTO = userDao.selectByUsername(username);
+		if(userDTO == null) {
+			throw new UserNotFound("존재하지 않는 유저입니다.");
+		}
+		if(userDTO.getPassword().equals(password)) {
+			return true;
+		}else {
+			throw new PWIncorrectException();
+		}
+	}
 
 	@Override
 	public LoginResponseDTO getLoginResponseDTO(String username, String password, JWTResponseDTO jwtResponseDTO) {
