@@ -18,6 +18,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.ssafy.ssafit.model.dto.DType;
 import com.ssafy.ssafit.model.dto.NotifyDTO;
 import com.ssafy.ssafit.model.service.NotifyService;
+import com.ssafy.ssafit.model.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,7 +32,9 @@ public class SocketTextHandler extends TextWebSocketHandler {
 	private final String REVIEW = "{}님이 회원님의 게시글에 댓글을 달았습니다.";	
 	private final String LIKE = "{}님이 회원님의 게시글을 좋아합니다.";	
 	private final String DM = "{}님이 회원님에게 DM을 보냈습니다.";
+	private final String REPORT = "신고가 접수되었습니다.";
 	private final Map<String, WebSocketSession> userSessionMap = new HashMap<>();
+	private final UserService userService;
 
 	private static final Logger log = LoggerFactory.getLogger(SocketTextHandler.class);
 
@@ -79,6 +82,23 @@ public class SocketTextHandler extends TextWebSocketHandler {
 			msg = fromUsername+SELF;
 			object.put("msg",msg);
 			session.sendMessage(new TextMessage(object.toString()));
+			
+			// 팔로우 목록을 볼때 로그인된 사용자들은 표시를 하기 위해 필요한 기능
+			// 세션에 로그인 일때 내가 팔로우한 사람들 목록 불러와서 그중 로그인되어있는 사람만
+			// -> session에 저장되어있는 사람만 알림으로 보내기
+			// (형식 JSON {username : 'usernae'}으로 보내기)
+			if(toSession != null) {
+				// 여기서 로그인된사람들 리스트 뽑아오기 -> toSession에 있는 key리스트를 받아오면 그게 로그인한 유저리스트
+				Set<String> loginUserList = userSessionMap.keySet();
+				// 그 리스트 중에 fromUsername이 팔로우한 사람들 목록을 꺼내온다
+				userService.getFollows(fromUsername).forEach(userDTO -> {
+					if(loginUserList.contains(userDTO.getUsername()) ) {
+						// 여기까지 오면 로그인한 사람중 내가 팔로우한 사람들 한명씩이니까 json형태로 담아주면 된다 -> 이걸 생각해보자
+						
+					}
+				});
+			}
+			
 		}
 		else if(type.equalsIgnoreCase("notice")) {
 			object.put("msg",NOTICE);
@@ -89,6 +109,11 @@ public class SocketTextHandler extends TextWebSocketHandler {
 					e.printStackTrace();
 				}
 			});
+		}
+		else if(type.equalsIgnoreCase("report")) {
+			msg = REPORT;
+			object.put("msg",msg);
+			session.sendMessage(new TextMessage(object.toString()));
 		}
 		else if(toSession != null) {
 			if(type.equalsIgnoreCase("like")) {
