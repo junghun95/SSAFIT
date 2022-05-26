@@ -4,6 +4,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.ssafit.interceptor.JWTInterceptor;
 import com.ssafy.ssafit.model.dto.UserDTO;
+import com.ssafy.ssafit.model.dto.request.JoinUserRequestDTO;
 import com.ssafy.ssafit.model.dto.response.UserResponseDTO;
 import com.ssafy.ssafit.model.service.UserService;
 import com.ssafy.ssafit.util.JWTUtil;
@@ -34,8 +37,19 @@ public class UserController {
 	private final ResponseUtil responseUtil;
 	private final JWTUtil jwtUtil;
 	
+	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
 	@PostMapping("/join")
-	public ResponseEntity<?> join(@RequestBody UserDTO userDTO){
+	public ResponseEntity<?> join(@RequestBody JoinUserRequestDTO joinUserResponseDTO){
+		
+		log.info(joinUserResponseDTO.toString());
+		
+		UserDTO userDTO = UserDTO.builder()
+				.username(joinUserResponseDTO.getUsername())
+				.password(joinUserResponseDTO.getPassword())
+				.email(joinUserResponseDTO.getEmail())
+				.build();
+		log.info(userDTO.toString());
 		userService.join(userDTO);
 		return new ResponseEntity<>(responseUtil.success("join success"), HttpStatus.ACCEPTED);
 	}

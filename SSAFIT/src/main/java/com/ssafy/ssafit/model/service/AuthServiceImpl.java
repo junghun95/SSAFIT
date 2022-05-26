@@ -19,7 +19,7 @@ public class AuthServiceImpl implements AuthService{
 	
 	@Override
 	public boolean check(String username, String password) throws Exception{
-		UserDTO userDTO = userDao.selectByUsername(username).get();
+		UserDTO userDTO = userDao.selectByUsername(username);
 		if(userDTO == null) {
 			throw new UserNotFound("존재하지 않는 유저입니다.");
 		}
@@ -32,7 +32,7 @@ public class AuthServiceImpl implements AuthService{
 
 	@Override
 	public LoginResponseDTO getLoginResponseDTO(String username, String password, JWTResponseDTO jwtResponseDTO) {
-		UserDTO userDTO = userDao.selectByUsername(username).get();
+		UserDTO userDTO = userDao.selectByUsername(username);
 		LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
 		loginResponseDTO.builder()
 						.username(username)

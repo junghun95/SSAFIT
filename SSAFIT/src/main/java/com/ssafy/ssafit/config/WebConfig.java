@@ -40,9 +40,10 @@ public class WebConfig implements WebMvcConfigurer{
 						"/swagger-resources/**", 
 						"/v3/api-docs/**",
 						"/api/auth/social/**",
-						"/api/user/join",
+						"/api/user/join/**",
 						"/api/board/{id}",
 						"/api/board/list",
-						"/api/user/name/**");
+						"/api/user/name/**",
+						"/api/review/video/**");
 	}
 }

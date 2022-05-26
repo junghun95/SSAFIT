@@ -15,4 +15,8 @@ public class ZzimDTO {
 	private int userId;
 	private int tagId;
 	private String tagName;
+	private String title;
+	private String channelTitle;
+	private String description;
+	private String publishTime;
 }

@@ -25,4 +25,7 @@ public class TagService {
 	public void removeTag(int id) {
 		tagDao.delete(id);
 	}
+	public List<TagDTO> getVideoTagByUserId(int userId) {
+		return tagDao.selectVideoTagsByUserId(userId);
+	}
 }
