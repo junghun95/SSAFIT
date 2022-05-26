@@ -262,6 +262,10 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `ssafit`.`zzim` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `video_id` VARCHAR(30) NOT NULL,
+  `title` varchar(500) not null,
+  `channel_title` varchar(500) not null,
+  `description`varchar(2000) not null,
+  `publish_time`timestamp not null,
   `user_id` INT NOT NULL,
   `tag_id` INT NULL,
   PRIMARY KEY (`id`),

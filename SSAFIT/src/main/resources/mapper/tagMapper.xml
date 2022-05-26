@@ -21,4 +21,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 		from tag
 	 		where id = #{id}
 	 </delete>
+	 
+	 <select id="selectVideoTagsByUserId" parameterType="int" resultType="tagDTO">
+	 	select distinct j.tag_id id, t.name name
+			from user u 
+				inner join zzim j 
+			    on u.id = j.user_id
+			    inner join tag t
+			    on j.tag_id = t.id
+		    where u.id=#{userId};
+	 </select>
 </mapper>

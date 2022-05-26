@@ -1,5 +1,7 @@
 package com.ssafy.ssafit.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +24,11 @@ public class FollowController {
 	private final FollowService followService;
 	private final ResponseUtil responseUtil;
 	
+	private static final Logger log = LoggerFactory.getLogger(FollowController.class);
+
 	@PostMapping("")
 	public ResponseEntity<?> follow(@RequestBody FollowDTO followDTO){
+		log.info(followDTO.toString());
 		followService.addFollow(followDTO);
 		return new ResponseEntity<>(responseUtil.success("follow accept") ,HttpStatus.ACCEPTED);
 	}

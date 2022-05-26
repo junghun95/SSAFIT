@@ -10,10 +10,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="user_id" property="userId"/>
 		<result column="tag_id" property="tagId"/>
 		<result column="tag_name" property="tagName"/>
+		<result column="title" property="title"/>
+		<result column="channel_title" property="channelTitle"/>
+		<result column="description" property="description"/>
+		<result column="publish_time" property="publishTime"/>
 	</resultMap>
 	
 	<select id="selectAll" resultMap="zzimMap" parameterType="int">
-		select distinct z.user_id user_id,z.video_id video_id, t.name tag_name, t.id tag_id
+		select distinct z.user_id user_id,z.video_id video_id, t.name tag_name, t.id tag_id,
+			z.title title ,z.channel_title channelTitle, z.description description,
+			    date_format(z.publish_time, '%Y-%m-%d %H:%i:%s') publishTime
 			from zzim z inner join tag t 
 			on z.tag_id = t.id 
 			where user_id = #{userId}
@@ -21,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insert" parameterType="zzimDTO">
 		insert into zzim
-		values (0, #{videoId}, #{userId}, #{tagId})
+		values (0, #{videoId},#{title}, #{channelTitle}, #{description}, #{publishTime}, #{userId}, #{tagId})
 	</insert>
 	
 	<delete id="delete" parameterType="java.util.HashMap">

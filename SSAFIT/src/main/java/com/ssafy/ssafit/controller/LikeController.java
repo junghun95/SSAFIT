@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,13 +33,13 @@ public class LikeController {
 	}
 	
 	@GetMapping("/{userId}")
-	public ResponseEntity<?> list(int userId){
+	public ResponseEntity<?> list(@PathVariable int userId){
 		return new ResponseEntity<>(responseUtil.success(likeService.getLike(userId)), HttpStatus.ACCEPTED);
 	}
 	
-	@DeleteMapping("/")
-	public ResponseEntity<?> remove(@RequestBody LikeDTO likeDTO){
-		likeService.remove(likeDTO);
+	@DeleteMapping("/{reviewId}/{userId}")
+	public ResponseEntity<?> remove(@PathVariable int reviewId, @PathVariable int userId){
+		likeService.remove(LikeDTO.builder().reviewId(reviewId).userId(userId).build());
 		return new ResponseEntity<>(responseUtil.success("delete like success"), HttpStatus.ACCEPTED);
 	}
 }

@@ -9,4 +9,5 @@ public interface TagDao {
 	List<TagDTO> selectAll();
 	void delete(int id);
 	TagDTO selectByName(String name);
+	List<TagDTO> selectVideoTagsByUserId(int userId);
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class LikeDTO {
-	private int userID;
+	private int userId;
 	private int reviewId;
 	private int boardId;
 	private String regDate;

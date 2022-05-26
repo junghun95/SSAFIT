@@ -30,7 +30,7 @@ public class FollowServiceImpl implements FollowService{
 	
 	
 	private FollowDTO findOne(FollowDTO followDTO) {
-		return followDao.selectByFollowIdAndUserId(followDTO).orElseGet(null);
+		return followDao.selectByFollowIdAndUserId(followDTO);
 	}
 	
 }

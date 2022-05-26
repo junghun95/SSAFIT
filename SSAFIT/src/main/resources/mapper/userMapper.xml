@@ -34,6 +34,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="z.video_id" property="videoId"/>
 			<result column="z.tag_id" property="tagId"/>
 			<result column="z.tag_name" property="tagName"/>
+			<result column="z.title" property="title"/>
+			<result column="z.channel_title" property="channelTitle"/>
+			<result column="z.description" property="description"/>
+			<result column="z.publish_time" property="publishTime"/>
 		</collection>
 		
 		<collection property="reviews" javaType="List" ofType="reviewDTO">
@@ -70,6 +74,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    r.id "r.id", r.content "r.content", r.video_id "r.video_id", r.board_id "r.board_id",
 			    date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date",
 			    z.id "z.id", z.video_id "z.video_id", z.tag_id "z.tag_id", t.name "z.tag_name",
+			    z.title "z.title",z.channel_title "z.channelTitle", z.description "z.description",
+			    date_format(z.publish_time, '%Y-%m-%d %H:%i:%s') "z.publishTime",
 			    re.review_id "re.review_id", re.board_id "re.board_id", re.content "re.content",
 			    date_format(re.reg_date, '%Y-%m-%d %H:%i:%s') "re.reg_date",
 			    l.review_id "l.review_id", l.board_id "l.board_id", 
@@ -106,6 +112,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    r.id "r.id", r.content "r.content", r.video_id "r.video_id", r.board_id "r.board_id",
 			    date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date",
 			    z.id "z.id", z.video_id "z.video_id", z.tag_id "z.tag_id", t.name "z.tag_name",
+			    z.title ,z.channel_title "z.channelTitle", z.description,
+			    date_format(z.publish_time, '%Y-%m-%d %H:%i:%s') "z.publishTime",
 			    re.review_id "re.review_id", re.board_id "re.board_id", re.content "re.content",
 			    date_format(re.reg_date, '%Y-%m-%d %H:%i:%s') "re.reg_date",
 			    l.review_id "l.review_id", l.board_id "l.board_id", 
@@ -142,6 +150,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    r.id "r.id", r.content "r.content", r.video_id "r.video_id", r.board_id "r.board_id",
 			    date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date",
 			    z.id "z.id", z.video_id "z.video_id", z.tag_id "z.tag_id", t.name "z.tag_name",
+			    z.title ,z.channel_title "z.channelTitle", z.description,
+			    date_format(z.publish_time, '%Y-%m-%d %H:%i:%s') "z.publishTime",
 			    re.review_id "re.review_id", re.board_id "re.board_id", re.content "re.content",
 			    date_format(re.reg_date, '%Y-%m-%d %H:%i:%s') "re.reg_date",
 			    l.review_id "l.review_id", l.board_id "l.board_id", 
@@ -181,29 +191,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectFollowsByUsername" parameterType="string" resultType="userDTO">
-		select u.id id, u.username username
+		select u.id id, u.username username, f.to_email toEmail
 			from user u inner join follow f
 				on u.email= f.to_email
 			where f.from_username = #{username}
 	</select>
 	
 	<select id="selectFollowersByUsername" parameterType="string" resultType="userDTO">
-		select id, username
-			from user
+		select u.id, u.username, u.email
+			from user u
         	where username 
         	in (select from_username 
 					from follow 
                 	where to_email
                 	= (select email 
-							from user 
-                        	where username = #{username}))
+							from user uu
+                        	where uu.username = #{username}))
 	</select>
 	
 	<insert id="insert" parameterType="userDTO" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
 		insert
 			into user
 			values
-			(0,#{username},#{password},'#{email}, "user",now())
+
+			(0,#{username},#{password}, #{email}, "user" ,now())
+
 	</insert>
 	
 	<delete id="delete" parameterType="int">
