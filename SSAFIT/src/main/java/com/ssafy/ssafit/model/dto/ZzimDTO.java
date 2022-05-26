@@ -13,5 +13,6 @@ public class ZzimDTO {
 	private int id;
 	private String videoId;
 	private int userId;
+	private int tagId;
 	private String tagName;
 }

@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap type="zzimDTO" id="zzimMap">
 		<result column="video_id" property="videoID"/>
 		<result column="user_id" property="userId"/>
-		<result column="part_id" property="partId"/>
+		<result column="tag_id" property="tagId"/>
 	</resultMap>
 	
 	<select id="selcetAll" resultMap="zzimMap" parameterType="int">
@@ -18,14 +18,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insert" parameterType="zzimDTO">
 		insert into zzim
-		values (0, #{videoId}, #{userId}, #{tagName})
+		values (0, #{videoId}, #{userId}, #{tagId})
 	</insert>
 	
 	<delete id="delete" parameterType="java.util.HashMap">
 		delete 
 		from zzim 
 		where video_id = #{videoId}
-		and user_id = #{user_id}
+		and user_id = #{userId}
 	</delete>
 	
 </mapper>

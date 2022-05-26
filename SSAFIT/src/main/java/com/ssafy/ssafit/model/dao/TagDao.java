@@ -8,4 +8,5 @@ public interface TagDao {
 	void insert(TagDTO tagDTO);
 	List<TagDTO> selectAll();
 	void delete(int id);
+	TagDTO selectByName(String name);
 }

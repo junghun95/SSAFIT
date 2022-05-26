@@ -26,11 +26,18 @@ public class ZzimServiceImpl implements ZzimService{
 
 	@Override
 	public void createZzim(ZzimDTO zzimDTO) {
-		zzimDao.insert(zzimDTO);
 		TagDTO tagDTO = TagDTO.builder()
-							.name(zzimDTO.getTagName())
-							.build();
-		tagDao.insert(tagDTO);
+				.name(zzimDTO.getTagName())
+				.build();
+		try {
+			tagDao.insert(tagDTO);		
+		}
+		catch(Exception e) {
+			tagDTO = tagDao.selectByName(tagDTO.getName());
+		}
+		
+		zzimDTO.setTagId(tagDTO.getId());
+		zzimDao.insert(zzimDTO);
 	}
 
 	@Override

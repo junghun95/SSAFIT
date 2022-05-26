@@ -8,12 +8,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from tag
 	</select>
 	 
-	 <insert id="insert" parameterType="tagDTO">
+	 <insert id="insert" parameterType="tagDTO" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
 	 	insert 
 	 		into tag
 	 		values(0,#{name})
 	 </insert>
-	 
+	 <select id="selectByName" parameterType="string" resultType="tagDTO">
+	 	select * from tag where name like #{name};
+	 </select>
 	 <delete id="delete" parameterType="int">
 	 	delete
 	 		from tag

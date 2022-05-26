@@ -55,6 +55,13 @@ public class UserController {
 				),
 				HttpStatus.ACCEPTED);
 	} 
+	@GetMapping("/name/{username}")
+	public ResponseEntity<?> oneByName(@PathVariable String username){
+		return new ResponseEntity<>(responseUtil.success(
+					UserResponseDTO.of(userService.getOneByUsername(username))
+				),
+				HttpStatus.ACCEPTED);
+	} 
 	
 	@GetMapping("/follower")
 	public ResponseEntity<?> follower(HttpServletRequest request){

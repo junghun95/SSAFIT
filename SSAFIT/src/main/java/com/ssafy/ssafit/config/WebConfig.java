@@ -42,6 +42,7 @@ public class WebConfig implements WebMvcConfigurer{
 						"/api/auth/social/**",
 						"/api/user/join",
 						"/api/board/{id}",
-						"/api/board/list");
+						"/api/board/list",
+						"/api/user/name/**");
 	}
 }
