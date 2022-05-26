@@ -1,5 +1,7 @@
 package com.ssafy.ssafit.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,12 +28,15 @@ public class AuthController {
 	private final ResponseUtil responseUtil;
 	private final AuthService authService;
 
+	private static final Logger log = LoggerFactory.getLogger(AuthController.class);
+
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO){
 		try {
 			if (authService.check(loginRequestDTO.getUsername(), loginRequestDTO.getPassword())) {
 				LoginResponseDTO loginResponseDTO = authService.getLoginResponseDTO(loginRequestDTO.getUsername(), loginRequestDTO.getPassword(), JWTResponseDTO.of(jwtUtil.createToken("username", loginRequestDTO.getUsername())));
-				return new ResponseEntity<>(responseUtil.success("login success", loginResponseDTO), HttpStatus.ACCEPTED);
+				log.info(loginResponseDTO.toString());
+				return new ResponseEntity<>(responseUtil.success("login success", JWTResponseDTO.of(jwtUtil.createToken("username", loginRequestDTO.getUsername()))), HttpStatus.ACCEPTED);
 			} else {			
 				return new ResponseEntity<>(responseUtil.success("fail"), HttpStatus.ACCEPTED);
 			}

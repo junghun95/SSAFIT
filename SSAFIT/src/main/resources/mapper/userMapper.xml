@@ -30,9 +30,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</collection>
 		
 		<collection property="zzims" javaType="List" ofType="zzimDTO">
-			<result column="id" property="id"/>
-			<result column="video_id" property="videoId"/>
-			<result column="part_id" property="pardId"/>
+			<result column="z.id" property="id"/>
+			<result column="z.video_id" property="videoId"/>
+			<result column="z.tag_id" property="pardId"/>
 		</collection>
 		
 		<collection property="reviews" javaType="List" ofType="reviewDTO">
@@ -68,7 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    n.id "n.id", n.user_id "n.user_id", n.object_id "n.object_id", n.d_type "n.d_type",
 			    r.id "r.id", r.content "r.content", r.video_id "r.video_id", r.board_id "r.board_id",
 			    date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date",
-			    z.id "z.id", z.video_id "z.video_id", z.part_id "z.part_id",
+			    z.id "z.id", z.video_id "z.video_id", z.tag_id "z.tag_id",
 			    re.review_id "re.review_id", re.board_id "re.board_id", re.content "re.content",
 			    date_format(re.reg_date, '%Y-%m-%d %H:%i:%s') "re.reg_date",
 			    l.review_id "l.review_id", l.board_id "l.board_id", 
@@ -104,7 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    n.id "n.id", n.user_id "n.user_id", n.object_id "n.object_id", n.d_type "n.d_type",
 			    r.id "r.id", r.content "r.content", r.video_id "r.video_id", r.board_id "r.board_id",
 			    date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date",
-			    z.id "z.id", z.video_id "z.video_id", z.part_id "z.part_id",
+			    z.id "z.id", z.video_id "z.video_id", z.tag_id "z.tag_id",
 			    re.review_id "re.review_id", re.board_id "re.board_id", re.content "re.content",
 			    date_format(re.reg_date, '%Y-%m-%d %H:%i:%s') "re.reg_date",
 			    l.review_id "l.review_id", l.board_id "l.board_id", 
@@ -140,7 +140,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    n.id "n.id", n.user_id "n.user_id", n.object_id "n.object_id", n.d_type "n.d_type",
 			    r.id "r.id", r.content "r.content", r.video_id "r.video_id", r.board_id "r.board_id",
 			    date_format(r.reg_date, '%Y-%m-%d %H:%i:%s') "r.reg_date",
-			    z.id "z.id", z.video_id "z.video_id", z.part_id "z.part_id",
+			    z.id "z.id", z.video_id "z.video_id", z.tag_id "z.tag_id",
 			    re.review_id "re.review_id", re.board_id "re.board_id", re.content "re.content",
 			    date_format(re.reg_date, '%Y-%m-%d %H:%i:%s') "re.reg_date",
 			    l.review_id "l.review_id", l.board_id "l.board_id", 

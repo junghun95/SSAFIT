@@ -234,7 +234,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ssafit`.`tag` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(20) NOT NULL,
+  `name` VARCHAR(20) NOT NULL unique,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -269,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`zzim` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `video_id` VARCHAR(30) NOT NULL,
   `user_id` INT NOT NULL,
-  `part_id` INT NOT NULL,
+  `tag_id` INT NULL,
   PRIMARY KEY (`id`),
   INDEX `zzim_user_FK_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `zzim_user_FK`

@@ -3,6 +3,8 @@ package com.ssafy.ssafit.controller;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +33,8 @@ import lombok.RequiredArgsConstructor;
 public class ReviewController {
 	private final ReviewService reviewService;
 	private final ResponseUtil responseUtil;
+	
+	private static final Logger log = LoggerFactory.getLogger(ReviewController.class);
 
 	@GetMapping("/video/{id}")
 	public ResponseEntity<Map<String, Object>> videoReviewList(@PathVariable String id) {
@@ -49,7 +53,8 @@ public class ReviewController {
 	}
 	
 	@PostMapping("/write")
-	public ResponseEntity<Map<String, Object>> write(ReviewDTO review){
+	public ResponseEntity<Map<String, Object>> write(@RequestBody ReviewDTO review){
+		log.info("review write->",review.toString());
 		reviewService.writeReview(review);
 		return new ResponseEntity<>(responseUtil.success("write review"), HttpStatus.ACCEPTED);
 	}
