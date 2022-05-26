@@ -39,6 +39,10 @@ public class UserController {
 	
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
+	@GetMapping("/email/{email}")
+	public ResponseEntity<?> checkUser(@PathVariable String email){
+		return new ResponseEntity<>(responseUtil.success(userService.getOneByEmail(email)), HttpStatus.ACCEPTED);
+	}
 	@PostMapping("/join")
 	public ResponseEntity<?> join(@RequestBody JoinUserRequestDTO joinUserResponseDTO){
 		

@@ -81,7 +81,6 @@ public class SocketTextHandler extends TextWebSocketHandler {
 			userSessionMap.put(fromUsername,session);
 			msg = fromUsername+SELF;
 			object.put("msg",msg);
-			session.sendMessage(new TextMessage(object.toString()));
 			
 			// 팔로우 목록을 볼때 로그인된 사용자들은 표시를 하기 위해 필요한 기능
 			// 세션에 로그인 일때 내가 팔로우한 사람들 목록 불러와서 그중 로그인되어있는 사람만
@@ -91,13 +90,16 @@ public class SocketTextHandler extends TextWebSocketHandler {
 				// 여기서 로그인된사람들 리스트 뽑아오기 -> toSession에 있는 key리스트를 받아오면 그게 로그인한 유저리스트
 				Set<String> loginUserList = userSessionMap.keySet();
 				// 그 리스트 중에 fromUsername이 팔로우한 사람들 목록을 꺼내온다
+				JSONObject followLoginUsers = new JSONObject();
 				userService.getFollows(fromUsername).forEach(userDTO -> {
 					if(loginUserList.contains(userDTO.getUsername()) ) {
 						// 여기까지 오면 로그인한 사람중 내가 팔로우한 사람들 한명씩이니까 json형태로 담아주면 된다 -> 이걸 생각해보자
-						
+						followLoginUsers.put("username", userDTO.getUsername());
 					}
 				});
+				object.put("followLoginList", followLoginUsers);
 			}
+			session.sendMessage(new TextMessage(object.toString()));
 			
 		}
 		else if(type.equalsIgnoreCase("notice")) {
