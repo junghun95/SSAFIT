@@ -5,15 +5,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.ssafy.ssafit.model.dao.ZzimDao">
 	<resultMap type="zzimDTO" id="zzimMap">
-		<result column="video_id" property="videoID"/>
+		<result column="id" property="id"/>
+		<result column="video_id" property="videoId"/>
 		<result column="user_id" property="userId"/>
 		<result column="tag_id" property="tagId"/>
+		<result column="tag_name" property="tagName"/>
 	</resultMap>
 	
-	<select id="selcetAll" resultMap="zzimMap" parameterType="int">
-		select *
-		from zzim
-		where user_id = #{userId}
+	<select id="selectAll" resultMap="zzimMap" parameterType="int">
+		select distinct z.user_id user_id,z.video_id video_id, t.name tag_name, t.id tag_id
+			from zzim z inner join tag t 
+			on z.tag_id = t.id 
+			where user_id = #{userId}
 	</select>
 	
 	<insert id="insert" parameterType="zzimDTO">

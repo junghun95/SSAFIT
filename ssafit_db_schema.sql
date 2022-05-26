@@ -214,12 +214,6 @@ CREATE TABLE IF NOT EXISTS `ssafit`.`review` (
   `delete_date` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `REVIEW_USER_idx` (`user_id` ASC) VISIBLE,
-  INDEX `REVIEW_BOARD_FK_idx` (`board_id` ASC) VISIBLE,
-  CONSTRAINT `REVIEW_BOARD_FK`
-    FOREIGN KEY (`board_id`)
-    REFERENCES `ssafit`.`board` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
   CONSTRAINT `REVIEW_USER_FK`
     FOREIGN KEY (`user_id`)
     REFERENCES `ssafit`.`user` (`id`)
