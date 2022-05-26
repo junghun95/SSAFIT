@@ -34,6 +34,11 @@ public class UserController {
 	private final ResponseUtil responseUtil;
 	private final JWTUtil jwtUtil;
 	
+	@GetMapping("/{email}")
+	public ResponseEntity<?> checkUser(@PathVariable String email){
+		return new ResponseEntity<>(responseUtil.success(userService.getOneByEmail(email)), HttpStatus.ACCEPTED);
+	}
+	
 	@PostMapping("/join")
 	public ResponseEntity<?> join(@RequestBody UserDTO userDTO){
 		userService.join(userDTO);

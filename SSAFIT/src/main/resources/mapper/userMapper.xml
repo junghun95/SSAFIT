@@ -203,7 +203,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert
 			into user
 			values
-			(0,#{username},#{password},'#{email}, #{role},now())
+			(0,#{username},#{password},'#{email}, "user",now())
 	</insert>
 	
 	<delete id="delete" parameterType="int">
